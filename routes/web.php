@@ -7,12 +7,15 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::middleware('auth')->group(function () {
-    // protected routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Protected routes go here
+    Route::get('/', function () {
+        return view('index');
+    });
+
+    Route::delete('/logout', [SessionController::class, 'destroy']);
 });
-Route::get('/', function () {
-    return view('index');
-});
+
 
 Route::get('/register', [RegisterController::class, 'create'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
@@ -20,7 +23,7 @@ Route::post('/register', [RegisterController::class, 'store']);
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 
-Route::delete('/logout', [SessionController::class, 'destroy']);
+
 
 
 // Show the request form
