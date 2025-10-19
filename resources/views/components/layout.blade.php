@@ -19,11 +19,13 @@
 
             <!-- Right side -->
             @auth
-                <div class="space-x-6 font-bold flex">
+                <div class="space-x-6 font-bold flex items-center">
+                    <a href="{{ route('profile.show') }}" class="hover:underline">Profile</a>
+
                     <form method="POST" action="/logout">
                         @csrf
                         @method('DELETE')
-                        <button type="submit">Log Out</button>
+                        <button type="submit" class="hover:underline">Log Out</button>
                     </form>
                 </div>
             @endauth

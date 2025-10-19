@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Protected routes go here
     Route::get('/', function () {
         return view('index');
-    });
+    })->name('home');
+    // user profile routes
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
+    // Logout route
     Route::delete('/logout', [SessionController::class, 'destroy']);
 });
 

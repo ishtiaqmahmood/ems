@@ -1,1 +1,1 @@
-<x-layout></x-layout>
+<x-viewer-layout></x-viewer-layout>
