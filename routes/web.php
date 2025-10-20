@@ -13,10 +13,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
         return view('index');
     })->name('home');
+
     // user profile routes
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+
+    // Documents routes
+    Route::resource('documents', \App\Http\Controllers\DocumentController::class);
 
     // Logout route
     Route::delete('/logout', [SessionController::class, 'destroy']);

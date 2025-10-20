@@ -37,6 +37,54 @@
           hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
                 Profile
             </a>
+            <a href="{{ route('documents.index') }}"
+                class="block px-4 py-2 rounded-lg border
+   {{ request()->routeIs('documents.*')
+       ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+       : 'border-gray-200 text-gray-700' }}
+   hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                Documents
+            </a>
+
+            <a href="#"
+                class="flex items-center px-4 py-2 rounded-lg border
+    {{ request()->routeIs('attendance.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                Attendance
+            </a>
+
+            <a href="#"
+                class="flex items-center px-4 py-2 rounded-lg border
+    {{ request()->routeIs('leave.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                Leave
+            </a>
+
+            <a href="#"
+                class="flex items-center px-4 py-2 rounded-lg border
+    {{ request()->routeIs('payroll.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                Payroll
+            </a>
+
+            <a href="#"
+                class="flex items-center px-4 py-2 rounded-lg border
+    {{ request()->routeIs('events.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                Events
+            </a>
+
         </nav>
 
         @auth
