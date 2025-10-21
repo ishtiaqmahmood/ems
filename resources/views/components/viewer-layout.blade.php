@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     @vite('resources/css/app.css')
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-gray-100 h-screen flex overflow-hidden">
@@ -46,6 +47,24 @@
                 Documents
             </a>
 
+            <a href="{{ route('photos.index') }}"
+                class="block px-4 py-2 rounded-lg border
+   {{ request()->routeIs('photos.*')
+       ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+       : 'border-gray-200 text-gray-700' }}
+   hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                Photos
+            </a>
+
+            <a href="{{ route('calendar.index') }}"
+                class="flex items-center px-4 py-2 rounded-lg border
+    {{ request()->routeIs('calendar.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                Calendar
+            </a>
             <a href="#"
                 class="flex items-center px-4 py-2 rounded-lg border
     {{ request()->routeIs('attendance.*')

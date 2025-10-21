@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\Profile\ProfileController;
+use App\Http\Controllers\PhotoController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -21,6 +23,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Documents routes
     Route::resource('documents', \App\Http\Controllers\DocumentController::class);
+
+    // Photo routes
+    Route::get('/photos', [PhotoController::class, 'index'])->name('photos.index');
+    Route::get('/photos/create', [PhotoController::class, 'create'])->name('photos.create');
+    Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
+    Route::get('/photos/{photo}', [PhotoController::class, 'show'])->name('photos.show');
+    Route::delete('/photos/{photo}', [PhotoController::class, 'destroy'])->name('photos.destroy');
+
+    // Calendar routes
+    Route::get('calendar/{year?}/{month?}', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::post('calendar/events', [CalendarController::class, 'store'])->name('calendar.events.store');
+    Route::patch('calendar/events/{event}', [CalendarController::class, 'update'])->name('calendar.events.update');
+    Route::delete('calendar/events/{event}', [CalendarController::class, 'destroy'])->name('calendar.events.destroy');
 
     // Logout route
     Route::delete('/logout', [SessionController::class, 'destroy']);

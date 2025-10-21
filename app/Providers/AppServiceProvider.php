@@ -2,13 +2,19 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Models\Calendar;
+use App\Policies\CalendarPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class AppServiceProvider extends AuthServiceProvider
 {
     /**
      * Register any application services.
      */
+    protected $policies = [
+        Calendar::class => CalendarPolicy::class,
+    ];
+
     public function register(): void
     {
         //
@@ -19,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->registerPolicies();
     }
 }
