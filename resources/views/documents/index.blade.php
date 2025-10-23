@@ -1,4 +1,12 @@
 <x-viewer-layout>
+    {{-- 📤 Create Document Button --}}
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('documents.create') }}"
+            class="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white rounded-2xl shadow-md transition transform hover:scale-[1.02]">
+            <i class="bi bi-plus-circle text-lg"></i>
+            <span>Create Document</span>
+        </a>
+    </div>
     {{-- ✅ Success Message --}}
     @if (session('success'))
         <div
@@ -19,47 +27,7 @@
         </div>
     @endif
 
-    {{-- 📤 Upload Section --}}
-    <div class="bg-white shadow-md rounded-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
-            <i class="bi bi-cloud-arrow-up text-sky-600"></i> Upload New Document
-        </h2>
-        <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-            @csrf
-            <div>
-                <label class="block text-gray-700 mb-1 font-medium">Title</label>
-                <input type="text" name="title"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500"
-                    required>
-            </div>
-            <div>
-                <label class="block text-gray-700 mb-1 font-medium">Description</label>
-                <textarea name="description" rows="3"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500"></textarea>
-            </div>
-            <div>
-                <label class="block text-gray-700 mb-1 font-medium">File</label>
-                <input type="file" name="file"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500"
-                    required>
-            </div>
-            <div>
-                <label class="block text-gray-700 mb-1 font-medium">Visibility</label>
-                <select name="visibility"
-                    class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-sky-500 focus:border-sky-500"
-                    required>
-                    <option value="">-- Select Visibility --</option>
-                    <option value="private">Private (Only Me)</option>
-                    <option value="public">Public (Everyone)</option>
-                </select>
-            </div>
-            <div class="pt-3">
-                <button type="submit" class="px-5 py-2.5 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition">
-                    <i class="bi bi-upload"></i> Upload
-                </button>
-            </div>
-        </form>
-    </div>
+
 
     {{-- 📄 Document List --}}
     <div class="bg-white shadow-md rounded-lg overflow-hidden">

@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\Attendance\AttendanceController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('calendar/events', [CalendarController::class, 'store'])->name('calendar.events.store');
     Route::patch('calendar/events/{event}', [CalendarController::class, 'update'])->name('calendar.events.update');
     Route::delete('calendar/events/{event}', [CalendarController::class, 'destroy'])->name('calendar.events.destroy');
+
+    // Attendance routes
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/attendance/create', [AttendanceController::class, 'create'])->name('attendance.create');
+    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::get('/attendance/{attendance}', [AttendanceController::class, 'show'])->name('attendance.show');
+    Route::get('/attendance/{attendance}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
+    Route::put('/attendance/{attendance}', [AttendanceController::class, 'update'])->name('attendance.update');
+    Route::patch('/attendance/{attendance}', [AttendanceController::class, 'update']);
+    Route::delete('/attendance/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
+    Route::get('/attendance/export/pdf', [AttendanceController::class, 'exportPdf'])->name('attendance.export.pdf');
+
 
     // Logout route
     Route::delete('/logout', [SessionController::class, 'destroy']);

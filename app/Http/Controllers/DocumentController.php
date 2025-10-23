@@ -31,6 +31,10 @@ class DocumentController extends BaseController
         return view('documents.index', compact('documents'));
     }
 
+    public function create()
+    {
+        return view('documents.create');
+    }
     /**
      * Store a newly created document.
      */
