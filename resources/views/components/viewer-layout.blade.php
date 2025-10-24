@@ -89,9 +89,9 @@
                 Leave
             </a>
 
-            <a href="#"
+            <a href="{{ route('salaries.index') }}"
                 class="flex items-center px-4 py-2 rounded-lg border
-    {{ request()->routeIs('payroll.*')
+    {{ request()->routeIs('salaries.*')
         ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
         : 'border-gray-200 text-gray-700' }}
     hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">

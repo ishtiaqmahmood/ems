@@ -8,6 +8,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\Attendance\AttendanceController;
+use App\Http\Controllers\Salary\SalaryController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -49,6 +50,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/attendance/{attendance}', [AttendanceController::class, 'destroy'])->name('attendance.destroy');
     Route::get('/attendance/export/pdf', [AttendanceController::class, 'exportPdf'])->name('attendance.export.pdf');
 
+
+    // Salary routes
+    Route::resource('salaries', SalaryController::class)->except(['show']);
 
     // Logout route
     Route::delete('/logout', [SessionController::class, 'destroy']);
