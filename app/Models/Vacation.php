@@ -30,12 +30,14 @@ class Vacation extends Model
     /**
      * Optional: Calculate total_days automatically if needed.
      */
-    public static function booted()
+    public static function boot()
     {
-        static::saving(function ($vacation) {
-            if (!$vacation->total_days) {
-                $vacation->total_days = $vacation->start_date->diffInDays($vacation->end_date) + 1;
-            }
+        parent::boot();
+
+        static::creating(function ($vacation) {
+            $vacation->total_days = $vacation->start_date && $vacation->end_date
+                ? (new \DateTime($vacation->end_date))->diff(new \DateTime($vacation->start_date))->days + 1
+                : 0;
         });
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Profile\ProfileController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\Attendance\AttendanceController;
 use App\Http\Controllers\Salary\SalaryController;
+use App\Http\Controllers\Vacation\VacationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -53,6 +54,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Salary routes
     Route::resource('salaries', SalaryController::class)->except(['show']);
+
+    // Vacation routes
+    Route::get('/vacations', [VacationController::class, 'index'])->name('vacations.index');
+    Route::get('/vacations/create', [VacationController::class, 'create'])->name('vacations.create');
+    Route::post('/vacations', [VacationController::class, 'store'])->name('vacations.store');
+
+    // HR/Admin approval routes
+
+    Route::patch('/vacations/{vacation}/status', [VacationController::class, 'updateStatus'])->name('vacations.updateStatus');
+
+    Route::get('/vacations/summary', [VacationController::class, 'summary'])->name('vacations.summary');
+    Route::get('/vacations/summary/admin', [VacationController::class, 'adminSummary'])->name('vacations.adminSummary');
+
 
     // Logout route
     Route::delete('/logout', [SessionController::class, 'destroy']);
