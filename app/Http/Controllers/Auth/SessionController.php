@@ -18,24 +18,35 @@ class SessionController extends Controller
     {
         $attributes = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required']
+            'password' => ['required'],
         ]);
 
         $remember = $request->filled('remember');
 
-        if (! Auth::attempt($attributes, $remember)) {
+        if (!Auth::attempt($attributes, $remember)) {
             throw ValidationException::withMessages([
                 'email' => "Sorry, those credentials do not match."
             ]);
         }
 
+        // Regenerate session after login
         $request->session()->regenerate();
-        return redirect('/')->with('success', 'Welcome back!');;
+
+        // Get the authenticated user
+        $user = Auth::user();
+
+        // Redirect based on role
+        if ($user->role === 'Admin') {
+            return redirect('/admin')->with('success', 'Welcome back, Admin!');
+        }
+
+        // Default for Viewer
+        return redirect('/')->with('success', 'Welcome back!');
     }
 
     public function destroy()
     {
         Auth::logout();
-        return redirect('/');
+        return redirect('/login');
     }
 }

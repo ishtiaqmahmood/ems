@@ -13,7 +13,7 @@ use App\Http\Controllers\Vacation\VacationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
     Route::get('/', function () {
         return view('index');
@@ -66,12 +66,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/vacations/summary', [VacationController::class, 'summary'])->name('vacations.summary');
     Route::get('/vacations/summary/admin', [VacationController::class, 'adminSummary'])->name('vacations.adminSummary');
-
-
-    // Logout route
-    Route::delete('/logout', [SessionController::class, 'destroy']);
 });
 
+Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
+    // Protected routes go here
+    Route::get('/admin', function () {
+        return view('adminindex');
+    })->name('adminhome');
+});
+
+// Logout route
+Route::delete('/logout', [SessionController::class, 'destroy'])->middleware('auth');
 
 Route::get('/register', [RegisterController::class, 'create'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
