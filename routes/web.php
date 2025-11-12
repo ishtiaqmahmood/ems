@@ -12,6 +12,8 @@ use App\Http\Controllers\Salary\SalaryController;
 use App\Http\Controllers\Vacation\VacationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\admin\profile\AdminProfileController;
+use App\Http\Controllers\admin\User\UserRoleController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
@@ -73,6 +75,22 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::get('/admin', function () {
         return view('adminindex');
     })->name('adminhome');
+
+    // admin profile routes
+    Route::get('admin/profile', [AdminProfileController::class, 'show'])->name('admin.profile.show');
+    Route::get('admin/profile/edit', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::post('admin/profile/update', [AdminProfileController::class, 'update'])->name('admin.profile.update');
+    Route::get('admin/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('admin.profile.change_password');
+    Route::post('admin/profile/change-password', [AdminProfileController::class, 'updatePassword'])->name('admin.profile.update_password');
+
+    // User role management routes
+    Route::get('admin/users', [UserRoleController::class, 'index'])->name('admin.users.index');
+    Route::get('admin/users/{id}/edit', [UserRoleController::class, 'edit'])->name('admin.users.edit');
+    Route::put('admin/users/{id}', [UserRoleController::class, 'update'])->name('admin.users.update');
+    Route::delete('admin/users/{user}', [UserRoleController::class, 'destroy'])->name('admin.users.destroy');
+
+    // User list
+    Route::get('admin/users/list', [UserRoleController::class, 'list'])->name('admin.users.list');
 });
 
 // Logout route

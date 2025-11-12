@@ -20,19 +20,22 @@
     <aside x-data="{ orgOpen: false, deptOpen: false, sectionOpen: false }" class="w-64 bg-white border-r border-gray-200 min-h-screen flex flex-col shadow-lg">
 
         <!-- 🔹 Sidebar Header -->
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h2 class="text-xl font-bold text-sky-700 flex items-center gap-2">
-                <i class="bi bi-people-fill text-sky-600"></i> HRM Panel
-            </h2>
-        </div>
+        <a href="/admin">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h2 class="text-xl font-bold text-sky-700 flex items-center gap-2">
+                    <i class="bi bi-people-fill text-sky-600"></i> HRM Panel
+                </h2>
+            </div>
+        </a>
+
 
         <!-- 🔹 Sidebar Navigation -->
         <nav class="flex-1 px-4 py-6 space-y-2 text-sm font-medium overflow-y-auto">
 
             <!-- Profile -->
-            <a href="#"
+            <a href="{{ route('admin.profile.show') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('profile.*')
+                {{ request()->routeIs('admin.profile.*')
                     ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
                     : 'border-gray-200 text-gray-700' }}
                 hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
@@ -57,9 +60,9 @@
                 <div x-show="staffOpen" x-collapse class="pl-6 space-y-2">
 
                     <!-- 🛡 User Roles -->
-                    <a href="#"
+                    <a href="{{ route('admin.users.index') }}"
                         class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('roles.*')
+                {{ request()->routeIs('admin.users.*')
                     ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
                     : 'border-gray-200 text-gray-700' }}
                 hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
@@ -67,19 +70,19 @@
                     </a>
 
                     <!-- 👥 User List -->
-                    <a href="#"
+                    <a href="{{ route('admin.users.list') }}"
                         class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('users.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                        <i class="bi bi-person-lines-fill text-sky-600"></i> User List
+    {{ request()->routeIs('admin.users.list') ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold' : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                        <i class="bi bi-person-lines-fill text-sky-600"></i>
+                        User List
                     </a>
+
                 </div>
             </div>
 
 
-            <!-- Organization -->
+            {{-- <!-- Organization -->
             <button @click="orgOpen = !orgOpen"
                 class="flex items-center justify-between w-full px-4 py-2 rounded-lg border
                 {{ request()->routeIs('organization.*')
@@ -127,7 +130,53 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
+
+            <!-- 🔹 Organization -->
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+    {{ request()->routeIs('organization.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                <i class="bi bi-building text-sky-600 text-lg"></i>
+                <span>Organization</span>
+            </a>
+
+            <!-- 🔹 Departments -->
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+    {{ request()->routeIs('departments.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                <i class="bi bi-diagram-3 text-sky-600 text-lg"></i>
+                <span>Departments</span>
+            </a>
+
+            <!-- 🔹 Sections -->
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+    {{ request()->routeIs('sections.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                <i class="bi bi-grid-1x2 text-sky-600 text-lg"></i>
+                <span>Sections</span>
+            </a>
+
+            <!-- 🔹 Employees -->
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+    {{ request()->routeIs('employees.*')
+        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+        : 'border-gray-200 text-gray-700' }}
+    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                <i class="bi bi-people text-sky-600 text-lg"></i>
+                <span>Employees</span>
+            </a>
+
+
 
             <!-- 🔹 Document Management Dropdown -->
             <div x-data="{ open: false }" class="relative">
@@ -316,7 +365,7 @@
         hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
                     <div class="flex items-center gap-2">
                         <i class="bi bi-cash-stack text-sky-600"></i>
-                        Payroll Management
+                        Payroll
                     </div>
                     <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-sky-600 transition"></i>
                 </button>
