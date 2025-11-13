@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\admin\profile\AdminProfileController;
 use App\Http\Controllers\admin\User\UserRoleController;
+use App\Http\Controllers\admin\Organization\OrganizationController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
@@ -91,6 +92,16 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     // User list
     Route::get('admin/users/list', [UserRoleController::class, 'list'])->name('admin.users.list');
+
+    // Organization management routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        // Resource routes for organizations
+        Route::resource('organizations', OrganizationController::class);
+
+        // Remove a specific image
+        Route::delete('organizations/{organization}/remove-image/{index}', [OrganizationController::class, 'removeImage'])
+            ->name('organizations.removeImage');
+    });
 });
 
 // Logout route
