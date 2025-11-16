@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->text('description')->nullable();
 
-            // 🔹 For single logo image
+            // For single logo image
             $table->string('logo')->nullable();
 
-            // 🔹 For multiple other images stored as JSON
+            // For multiple other images stored as JSON
             $table->json('images')->nullable();
             $table->timestamps();
         });

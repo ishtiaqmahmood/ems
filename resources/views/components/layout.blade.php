@@ -10,8 +10,8 @@
 </head>
 
 <body>
-    <div class="px-10">
-        <nav class="flex justify-between items-center py-4 border-b border-gray-700">
+    <div class="px-10 min-h-screen flex flex-col">
+        {{-- <nav class="flex justify-between items-center py-4 border-b border-gray-700">
             <!-- Left side -->
             <div class="space-x-6 font-bold">
                 <a href="/">EMS</a>
@@ -36,15 +36,9 @@
                     <a href="/login">Login</a>
                 </div>
             @endguest
-        </nav>
+        </nav> --}}
         <main class="flex-1 p-8 overflow-y-auto">
-            <header class="mb-6 flex justify-between items-center">
-                <h1 class="text-3xl font-semibold">Dashboard</h1>
-                <div class="flex items-center space-x-4">
-                    <span class="font-medium">Admin</span>
 
-                </div>
-            </header>
 
             <section>
                 {{ $slot }}

@@ -63,4 +63,19 @@ class Organization extends Model
     {
         return collect($this->images)->map(fn($path) => Storage::url($path))->toArray();
     }
+    // Relationships
+    public function departments()
+    {
+        return $this->hasMany(Department::class);
+    }
+
+    public function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
+
+    public function employees()
+    {
+        return $this->hasMany(Employer::class);
+    }
 }

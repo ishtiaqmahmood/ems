@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\admin\profile\AdminProfileController;
 use App\Http\Controllers\admin\User\UserRoleController;
 use App\Http\Controllers\admin\Organization\OrganizationController;
+use App\Http\Controllers\admin\Department\DepartmentController;
+use App\Http\Controllers\admin\Employer\EmployerController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
@@ -101,6 +103,28 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
         // Remove a specific image
         Route::delete('organizations/{organization}/remove-image/{index}', [OrganizationController::class, 'removeImage'])
             ->name('organizations.removeImage');
+    });
+
+    // Department management routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('departments', DepartmentController::class);
+    });
+    Route::post('admin/departments/sort', [DepartmentController::class, 'sort'])->name('admin.departments.sort');
+
+    // section management routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('sections', App\Http\Controllers\Admin\Section\SectionController::class);
+        Route::get('departments/by-organization/{id}', function ($id) {
+            return \App\Models\Department::where('organization_id', $id)->get();
+        });
+    });
+    Route::get('/admin/sections/{section}', [App\Http\Controllers\Admin\Section\SectionController::class, 'show'])
+        ->name('admin.sections.show');
+
+    // employee management routes
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('employers', EmployerController::class);
     });
 });
 

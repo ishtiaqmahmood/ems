@@ -137,7 +137,7 @@
             <!-- 🔹 Organization -->
             <a href="{{ route('admin.organizations.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('organizations.*')
+    {{ request()->routeIs('admin.organizations.*')
         ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
         : 'border-gray-200 text-gray-700' }}
     hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
@@ -146,9 +146,9 @@
             </a>
 
             <!-- 🔹 Departments -->
-            <a href="#"
+            <a href="{{ route('admin.departments.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('departments.*')
+    {{ request()->routeIs('admin.departments.*')
         ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
         : 'border-gray-200 text-gray-700' }}
     hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
@@ -157,9 +157,9 @@
             </a>
 
             <!-- 🔹 Sections -->
-            <a href="#"
+            <a href="{{ route('admin.sections.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('sections.*')
+    {{ request()->routeIs('admin.sections.*')
         ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
         : 'border-gray-200 text-gray-700' }}
     hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
@@ -168,9 +168,9 @@
             </a>
 
             <!-- 🔹 Employees -->
-            <a href="#"
+            <a href="{{ route('admin.employers.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('employees.*')
+    {{ request()->routeIs('admin.employers.*')
         ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
         : 'border-gray-200 text-gray-700' }}
     hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
