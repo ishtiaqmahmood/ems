@@ -51,7 +51,7 @@
           hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
                 Profile
             </a>
-            <a href="{{ route('documents.index') }}"
+            <a href="#"
                 class="block px-4 py-2 rounded-lg border
    {{ request()->routeIs('documents.*')
        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
@@ -60,7 +60,7 @@
                 Documents
             </a>
 
-            <a href="{{ route('photos.index') }}"
+            <a href="#"
                 class="block px-4 py-2 rounded-lg border
    {{ request()->routeIs('photos.*')
        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'

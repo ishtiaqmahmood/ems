@@ -178,59 +178,20 @@
                 <span>Employees</span>
             </a>
 
-
-
-            <!-- 🔹 Document Management Dropdown -->
-            <div x-data="{ open: false }" class="relative">
-                <!-- Dropdown Trigger -->
-                <button @click="open = !open"
-                    class="w-full flex items-center justify-between gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('documents.*') ||
-        request()->routeIs('doccategories.*') ||
-        request()->routeIs('hrdocs.*') ||
-        request()->routeIs('acknowledgments.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-file-earmark-text text-sky-600"></i>
-                        Documents
-                    </div>
-                    <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-sky-600"></i>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div x-show="open" x-transition class="mt-2 ml-4 flex flex-col gap-1 border-l border-sky-200 pl-3">
-                    <a href="#"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('doccategories.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-folder text-sky-500"></i> Document Categories
-                    </a>
-
-                    <a href="#"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('hrdocs.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-people text-sky-500"></i> HR Documents
-                    </a>
-
-                    <a href="#"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('acknowledgments.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-check2-circle text-sky-500"></i> Acknowledgments
-                    </a>
-                </div>
-            </div>
+            <!-- 🔹 Document -->
+            <a href="{{ route('admin.documents.index') }}"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+                {{ request()->routeIs('admin.documents.*')
+                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+                    : 'border-gray-200 text-gray-700' }}
+                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                <i class="bi bi-calendar3 text-sky-600"></i> Documents
+            </a>
 
             <!-- 🔹 Calendar -->
-            <a href="#"
+            <a href="{{ route('admin.calendar.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('calendar.*')
+                {{ request()->routeIs('admin.calendar.*')
                     ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
                     : 'border-gray-200 text-gray-700' }}
                 hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
@@ -238,9 +199,9 @@
             </a>
 
             <!-- 🔹 Photos -->
-            <a href="#"
+            <a href="{{ route('admin.photos.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('photos.*')
+                {{ request()->routeIs('admin.photos.*')
                     ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
                     : 'border-gray-200 text-gray-700' }}
                 hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
@@ -388,9 +349,9 @@
 
 
             <!-- 🔹 Events -->
-            <a href="#"
+            <a href="{{ route('admin.events.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('events.*')
+                {{ request()->routeIs('admin.events.*')
                     ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
                     : 'border-gray-200 text-gray-700' }}
                 hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">

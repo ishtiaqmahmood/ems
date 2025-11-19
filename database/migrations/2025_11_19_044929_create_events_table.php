@@ -11,14 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // owner of the document
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+
             $table->string('title');
-            $table->string('file_path');
-            $table->string('type')->nullable()->comment('e.g. CV, National ID, Certificate');
             $table->text('description')->nullable();
-            $table->enum('visibility', ['private', 'public'])->default('public');
+
+            $table->dateTime('start_datetime');
+            $table->dateTime('end_datetime');
+
+            $table->string('location')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('events');
     }
 };

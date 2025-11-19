@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\admin\Photos\ImageController;
 use App\Http\Controllers\Attendance\AttendanceController;
 use App\Http\Controllers\Salary\SalaryController;
 use App\Http\Controllers\Vacation\VacationController;
@@ -17,6 +17,7 @@ use App\Http\Controllers\admin\User\UserRoleController;
 use App\Http\Controllers\admin\Organization\OrganizationController;
 use App\Http\Controllers\admin\Department\DepartmentController;
 use App\Http\Controllers\admin\Employer\EmployerController;
+use App\Http\Controllers\admin\Event\EventController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
@@ -30,14 +31,14 @@ Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     // Documents routes
-    Route::resource('documents', \App\Http\Controllers\DocumentController::class);
+    // Route::resource('documents', \App\Http\Controllers\DocumentController::class);
 
     // Photo routes
-    Route::get('/photos', [PhotoController::class, 'index'])->name('photos.index');
-    Route::get('/photos/create', [PhotoController::class, 'create'])->name('photos.create');
-    Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
-    Route::get('/photos/{photo}', [PhotoController::class, 'show'])->name('photos.show');
-    Route::delete('/photos/{photo}', [PhotoController::class, 'destroy'])->name('photos.destroy');
+    // Route::get('/photos', [PhotoController::class, 'index'])->name('photos.index');
+    // Route::get('/photos/create', [PhotoController::class, 'create'])->name('photos.create');
+    // Route::post('/photos', [PhotoController::class, 'store'])->name('photos.store');
+    // Route::get('/photos/{photo}', [PhotoController::class, 'show'])->name('photos.show');
+    // Route::delete('/photos/{photo}', [PhotoController::class, 'destroy'])->name('photos.destroy');
 
     // Calendar routes
     Route::get('calendar/{year?}/{month?}', [CalendarController::class, 'index'])->name('calendar.index');
@@ -122,9 +123,38 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
         ->name('admin.sections.show');
 
     // employee management routes
-
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('employers', EmployerController::class);
+    });
+
+    // documents management routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('documents', App\Http\Controllers\Admin\Documents\DocumentController::class);
+    });
+    Route::get('admin/documents/{document}', [App\Http\Controllers\Admin\Documents\DocumentController::class, 'show'])
+        ->name('admin.documents.show');
+
+    // photos management routes
+    Route::prefix('admin/photos')->name('admin.photos.')->group(function () {
+        Route::get('/', [ImageController::class, 'index'])->name('index');
+        Route::get('/create', [ImageController::class, 'create'])->name('create');
+        Route::post('/store', [ImageController::class, 'store'])->name('store');
+
+        Route::get('/{photo}', [ImageController::class, 'show'])->name('show');
+        Route::get('/{photo}/edit', [ImageController::class, 'edit'])->name('edit');
+        Route::put('/{photo}/update', [ImageController::class, 'update'])->name('update');
+
+        Route::delete('/{photo}/delete', [ImageController::class, 'destroy'])->name('destroy');
+    });
+
+    // Calendar management routes
+    Route::prefix('admin/calendar')->name('admin.calendar.')->group(function () {
+        Route::get('/', [App\Http\Controllers\admin\Calendar\CalendarController::class, 'index'])->name('index');
+    });
+
+    // Event management routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('events', EventController::class);
     });
 });
 
