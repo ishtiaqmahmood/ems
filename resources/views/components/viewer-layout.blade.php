@@ -90,7 +90,7 @@
                 Leave
             </a>
 
-            <a href="{{ route('salaries.index') }}"
+            <a href="#"
                 class="flex items-center px-4 py-2 rounded-lg border
     {{ request()->routeIs('salaries.*')
         ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'

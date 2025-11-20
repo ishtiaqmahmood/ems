@@ -337,12 +337,20 @@
                 <div x-show="open" x-collapse x-transition
                     class="mt-2 ml-4 flex flex-col gap-1 border-l border-sky-200 pl-3">
                     <!-- Employer Salary -->
-                    <a href="#"
+                    <a href="{{ route('admin.salaries.all') }}"
                         class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('salary.*')
+           {{ request()->routeIs('admin.salaries.*')
                ? 'bg-sky-100 text-sky-800 font-semibold'
                : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
                         <i class="bi bi-wallet2 text-sky-500"></i> Employer Salary
+                    </a>
+                    <!-- Salary Garde-->
+                    <a href="{{ route('admin.salary-grades.index') }}"
+                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
+           {{ request()->routeIs('admin.salary-grades.*')
+               ? 'bg-sky-100 text-sky-800 font-semibold'
+               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
+                        <i class="bi bi-bar-chart-steps text-sky-500"></i> Salary Grades
                     </a>
                 </div>
             </div>

@@ -58,8 +58,8 @@ Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     Route::get('/attendance/export/pdf', [AttendanceController::class, 'exportPdf'])->name('attendance.export.pdf');
 
 
-    // Salary routes
-    Route::resource('salaries', SalaryController::class)->except(['show']);
+    // // Salary routes
+    // Route::resource('salaries', SalaryController::class)->except(['show']);
 
     // Vacation routes
     Route::get('/vacations', [VacationController::class, 'index'])->name('vacations.index');
@@ -156,7 +156,44 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('events', EventController::class);
     });
+
+    // Salary management routes
+    Route::prefix('admin')->name('admin.')->group(function () {
+
+        // Salary Grade CRUD
+        Route::resource('salary-grades', \App\Http\Controllers\admin\Salary\SalaryGradeController::class);
+
+        // Employer Salary CRUD (nested)
+        Route::prefix('employers/{employer}')->group(function () {
+            Route::get('salaries', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'index'])
+                ->name('salaries.index');
+
+            Route::get('salaries/create', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'create'])
+                ->name('salaries.create');
+
+            Route::post('salaries', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'store'])
+                ->name('salaries.store');
+
+            Route::get('/salaries/{salary}/edit', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'edit'])
+                ->name('salaries.edit');
+
+            Route::put('/salaries/{salary}', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'update'])
+                ->name('salaries.update');
+
+            Route::delete('salaries/{salary}', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'destroy'])
+                ->name('salaries.destroy');
+        });
+
+        // Optional: API route to fetch grade JSON
+        Route::get('salary/grade/{grade}/json', function ($grade) {
+            return \App\Models\SalaryGrade::findOrFail($grade);
+        });
+    });
+
+    Route::get('admin/salaries', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'all'])
+        ->name('admin.salaries.all');
 });
+
 
 // Logout route
 Route::delete('/logout', [SessionController::class, 'destroy'])->middleware('auth');
