@@ -18,6 +18,7 @@ use App\Http\Controllers\admin\Organization\OrganizationController;
 use App\Http\Controllers\admin\Department\DepartmentController;
 use App\Http\Controllers\admin\Employer\EmployerController;
 use App\Http\Controllers\admin\Event\EventController;
+use App\Http\Controllers\admin\Admin\AdminController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
@@ -76,9 +77,8 @@ Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
 
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     // Protected routes go here
-    Route::get('/admin', function () {
-        return view('adminindex');
-    })->name('adminhome');
+
+    Route::get('/admin', [AdminController::class, 'index'])->name('adminhome');
 
     // admin profile routes
     Route::get('admin/profile', [AdminProfileController::class, 'show'])->name('admin.profile.show');
