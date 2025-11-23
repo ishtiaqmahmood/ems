@@ -13,10 +13,36 @@ class ImageController extends Controller
     /**
      * Display all photos
      */
-    public function index()
+    public function index(Request $request)
     {
-        $photos = Photo::latest()->paginate(12);
-        return view('admin.photos.index', compact('photos'));
+        $query = Photo::query();
+
+        // Search by title
+        if ($request->search) {
+            $query->where('title', 'LIKE', '%' . $request->search . '%');
+        }
+
+        // Filter by file type
+        if ($request->type) {
+            $query->where('extension', $request->type);
+        }
+
+        // Sorting
+        if ($request->sort == 'oldest') {
+            $query->orderBy('created_at', 'asc');
+        } elseif ($request->sort == 'type') {
+            $query->orderBy('extension', 'asc');
+        } else {
+            // default newest
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $photos = $query->paginate(20);
+
+        // get unique file types for filter dropdown
+        $types = Photo::select('extension')->distinct()->pluck('extension');
+
+        return view('admin.photos.index', compact('photos', 'types'));
     }
 
     /**

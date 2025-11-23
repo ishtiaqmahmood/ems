@@ -14,11 +14,35 @@ class DocumentController extends Controller
     /**
      * List all documents
      */
-    public function index()
+    public function index(Request $request)
     {
-        $documents = Documents::latest()->paginate(15);
-        return view('admin.documents.index', compact('documents'));
+        // Get unique types for filter dropdown
+        $documentTypes = Documents::select('type')
+            ->whereNotNull('type')
+            ->distinct()
+            ->pluck('type');
+
+        // Query documents with search, filter, sort
+        $documents = Documents::query()
+            ->when($request->search, function ($query) use ($request) {
+                $query->where('title', 'like', '%' . $request->search . '%');
+            })
+            ->when($request->type, function ($query) use ($request) {
+                $query->where('type', $request->type);
+            })
+            ->when($request->sort, function ($query) use ($request) {
+                if ($request->sort === 'oldest') {
+                    return $query->oldest();
+                }
+                return $query->latest(); // default newest
+            })
+            ->latest()
+            ->paginate(15)
+            ->appends($request->query()); // keep filters on pagination
+
+        return view('admin.documents.index', compact('documents', 'documentTypes'));
     }
+
 
     public function show(Documents $document)
     {

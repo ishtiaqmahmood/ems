@@ -1,69 +1,123 @@
 <x-admin-layout>
-    <div class="p-6">
+    <div class="p-6" x-data="{ openFilter: false }">
 
         <!-- Header -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <h1 class="text-3xl font-extrabold text-gray-800 flex items-center gap-2">
-                <i class="bi bi-image text-sky-600"></i> Photos
+        <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
+            <h1 class="text-4xl font-extrabold text-gray-800 flex items-center gap-3">
+                <i class="bi bi-images text-sky-600"></i>
+                Photo Gallery
             </h1>
 
             <a href="{{ route('admin.photos.create') }}"
-                class="px-5 py-2 bg-blue-600 text-white rounded-2xl shadow hover:bg-blue-700 flex items-center gap-2 transition">
-                <i class="bi bi-plus-lg"></i> Upload Photos
+                class="px-6 py-2.5 bg-blue-600 text-white rounded-xl shadow hover:bg-blue-700 transition flex items-center gap-2">
+                <i class="bi bi-cloud-upload-fill"></i> Upload Photos
             </a>
         </div>
 
-        <!-- Success Message -->
-        @if (session('success'))
-            <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-2xl flex items-center gap-3 shadow">
-                <i class="bi bi-check-circle-fill text-green-600 text-lg"></i> {{ session('success') }}
-            </div>
-        @endif
+        <!-- Filters + Search -->
+        <form method="GET" class="bg-white rounded-2xl shadow p-5 mb-8 border">
 
-        <!-- Photos Grid -->
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @forelse($photos as $photo)
-                <div
-                    class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden transform hover:scale-105 transition duration-300">
+            <div class="grid md:grid-cols-4 gap-5">
 
-                    <!-- Photo Preview -->
-                    <a href="{{ route('admin.photos.show', $photo->id) }}">
-                        <img src="{{ Storage::url($photo->file_path) }}" class="w-full h-52 object-cover">
-                    </a>
-
-                    <!-- Info & Actions -->
-                    <div class="p-4 flex flex-col gap-2">
-                        <!-- Title -->
-                        <h2 class="text-gray-800 font-semibold truncate" title="{{ $photo->title }}">
-                            {{ $photo->title ?? 'Untitled' }}
-                        </h2>
-
-                        <!-- Details -->
-                        <div class="flex justify-between items-center text-gray-500 text-sm">
-                            <span>{{ strtoupper($photo->extension) }}</span>
-
-                            <!-- Delete Button -->
-                            <form action="{{ route('admin.photos.destroy', $photo->id) }}" method="POST"
-                                onsubmit="return confirm('Are you sure you want to delete this photo?');">
-                                @csrf
-                                @method('DELETE')
-                                <button class="text-red-600 hover:text-red-800 transition">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                <!-- Search -->
+                <div>
+                    <label class="text-gray-600 font-semibold">Search</label>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        class="mt-1 w-full rounded-xl border-gray-300 shadow-sm" placeholder="Search photos...">
                 </div>
+
+                <!-- Filter By Type -->
+                <div>
+                    <label class="text-gray-600 font-semibold">Filter by File Type</label>
+                    <select name="type" class="mt-1 w-full rounded-xl border-gray-300 shadow-sm">
+                        <option value="">All Types</option>
+                        @foreach ($types as $t)
+                            <option value="{{ $t }}" {{ request('type') == $t ? 'selected' : '' }}>
+                                {{ strtoupper($t) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Sorting -->
+                <div>
+                    <label class="text-gray-600 font-semibold">Sort By</label>
+                    <select name="sort" class="mt-1 w-full rounded-xl border-gray-300 shadow-sm">
+                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
+                        <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }}>Oldest First</option>
+                        <option value="type" {{ request('sort') == 'type' ? 'selected' : '' }}>File Type</option>
+                    </select>
+                </div>
+
+                <!-- Submit -->
+                <div class="flex items-end">
+                    <button
+                        class="w-full px-4 py-2 bg-sky-600 text-white rounded-xl shadow hover:bg-sky-700 transition">
+                        Apply
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Masonry Grid -->
+        <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
+
+            @forelse($photos as $photo)
+                <div class="break-inside-avoid">
+
+                    <div
+                        class="bg-white border border-gray-100 rounded-3xl shadow-lg overflow-hidden
+                            hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+
+                        <!-- Image -->
+                        <a href="{{ route('admin.photos.show', $photo->id) }}" class="block relative group">
+                            <img src="{{ Storage::url($photo->file_path) }}"
+                                class="w-full object-cover group-hover:opacity-90 transition duration-300">
+
+                            <!-- Hover Overlay -->
+                            <div
+                                class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <i class="bi bi-eye-fill text-white text-3xl"></i>
+                            </div>
+                        </a>
+
+                        <!-- Info -->
+                        <div class="p-4 flex flex-col gap-2">
+                            <h3 class="font-semibold text-gray-800 truncate">{{ $photo->title ?? 'Untitled' }}</h3>
+
+                            <div class="flex justify-between items-center text-gray-500 text-sm">
+                                <span class="uppercase flex items-center gap-1">
+                                    <i class="bi bi-file-earmark-image"></i> {{ $photo->extension }}
+                                </span>
+
+                                <form action="{{ route('admin.photos.destroy', $photo->id) }}" method="POST"
+                                    onsubmit="return confirm('Delete this photo?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="text-red-600 hover:text-red-800 transition">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
             @empty
-                <div class="col-span-full text-center text-gray-500 py-10">
-                    No photos uploaded yet.
+                <div class="col-span-full text-center py-20">
+                    <i class="bi bi-images text-gray-400 text-6xl mb-4"></i>
+                    <p class="text-gray-500 text-lg">No photos found.</p>
                 </div>
             @endforelse
         </div>
 
         <!-- Pagination -->
-        <div class="mt-8 flex justify-center">
-            {{ $photos->links() }}
+        <div class="mt-10 flex justify-center">
+            <div class="bg-white px-6 py-3 rounded-xl shadow border">
+                {{ $photos->appends(request()->query())->links() }}
+            </div>
         </div>
 
     </div>
