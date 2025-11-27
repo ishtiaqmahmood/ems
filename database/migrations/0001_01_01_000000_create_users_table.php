@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
 
             // Role & employment info
-            $table->enum('role', ['Admin', 'HR', 'Viewer'])->default('Viewer');
+            $table->enum('role', ['Admin', 'HR', 'Viewer'])->default('Admin');
             $table->string('employee_id')->unique()->nullable()->comment('Unique company employee ID');
             $table->string('designation')->nullable()->comment('Job title or position');
             $table->string('department')->nullable()->comment('Department name');

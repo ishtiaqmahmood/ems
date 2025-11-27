@@ -1,72 +1,118 @@
 <x-admin-layout>
-    <div class="p-6">
-        <h1 class="text-2xl font-bold mb-4">Create Section</h1>
+    <div class="max-w-4xl mx-auto p-6">
 
-        <form action="{{ route('admin.sections.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
+        {{-- Page Header --}}
+        <div class="flex justify-between items-center mb-8">
+            <h1
+                class="text-3xl font-extrabold bg-clip-text text-transparent
+                bg-gradient-to-r from-sky-600 to-blue-400 drop-shadow">
+                Create Section
+            </h1>
+        </div>
 
-            {{-- Organization --}}
-            <label class="font-semibold">Organization</label>
-            <select name="organization_id" id="organization" class="w-full mb-3 p-2 border rounded">
-                <option value="">Select Organization</option>
-                @foreach ($organizations as $org)
-                    <option value="{{ $org->id }}">{{ $org->name }}</option>
-                @endforeach
-            </select>
+        {{-- Form Card --}}
+        <div class="bg-white shadow-xl rounded-2xl p-8 border border-gray-100">
+            <form action="{{ route('admin.sections.store') }}" method="POST" enctype="multipart/form-data"
+                class="space-y-6">
+                @csrf
 
-            {{-- Department --}}
-            <label class="font-semibold">Department</label>
-            <select name="department_id" id="department" class="w-full mb-3 p-2 border rounded">
-                <option value="">Select Department</option>
-            </select>
+                {{-- Organization --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Organization</label>
+                    <select name="organization_id" id="organization"
+                        class="w-full p-3 rounded-xl border-gray-300 shadow-sm focus:ring-2
+                               focus:ring-sky-500 transition">
+                        <option value="">Select Organization</option>
+                        @foreach ($organizations as $org)
+                            <option value="{{ $org->id }}">{{ $org->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            {{-- Name --}}
-            <label class="font-semibold">Section Name</label>
-            <input type="text" name="name" class="w-full mb-3 p-2 border rounded" required>
+                {{-- Department --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Department</label>
+                    <select name="department_id" id="department"
+                        class="w-full p-3 rounded-xl border-gray-300 shadow-sm focus:ring-2
+                               focus:ring-sky-500 transition">
+                        <option value="">Select Department</option>
+                    </select>
+                </div>
 
-            {{-- Slug --}}
-            <label class="font-semibold">Slug (auto-generated)</label>
-            <input type="text" name="slug" id="slug" class="w-full mb-3 p-2 border rounded" readonly>
+                {{-- Name --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Section Name</label>
+                    <input type="text" name="name" required
+                        class="w-full p-3 rounded-xl border-gray-300 shadow-sm focus:ring-2
+                               focus:ring-sky-500 transition"
+                        placeholder="Enter section name...">
+                </div>
 
-            {{-- Code --}}
-            <label class="font-semibold">Code (auto-generated)</label>
-            <input type="text" name="code" class="w-full mb-3 p-2 border rounded"
-                value="{{ strtoupper(Str::random(6)) }}" readonly>
+                {{-- Slug --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Slug (auto-generated)</label>
+                    <input type="text" id="slug" name="slug" readonly
+                        class="w-full p-3 rounded-xl bg-gray-100 border-gray-200 shadow-inner text-gray-600">
+                </div>
 
-            {{-- UUID --}}
-            <input type="hidden" name="uuid" value="{{ Str::uuid() }}">
+                {{-- Code --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Code (auto-generated)</label>
+                    <input type="text" name="code" readonly
+                        class="w-full p-3 rounded-xl bg-gray-100 border-gray-200 shadow-inner text-gray-600"
+                        value="{{ strtoupper(Str::random(6)) }}">
+                </div>
 
-            {{-- Images
-            <label class="font-semibold">Images</label>
-            <input type="file" name="images[]" multiple class="w-full mb-3 p-2 border rounded"> --}}
+                {{-- UUID --}}
+                <input type="hidden" name="uuid" value="{{ Str::uuid() }}">
 
-            {{-- Description --}}
-            <label class="font-semibold">Description</label>
-            <textarea name="description" rows="4" class="w-full p-2 border rounded" placeholder="Section description..."></textarea>
+                {{-- Description --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Description</label>
+                    <textarea name="description" rows="4"
+                        class="w-full p-3 rounded-xl border-gray-300 shadow-sm focus:ring-2
+                               focus:ring-sky-500 transition"
+                        placeholder="Write section description..."></textarea>
+                </div>
 
-            {{-- Status --}}
-            <label class="font-semibold">Status</label>
-            <select name="status" class="w-full mb-3 p-2 border rounded">
-                <option value="active" selected>Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="archived">Archived</option>
-            </select>
+                {{-- Status --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Status</label>
+                    <select name="status"
+                        class="w-full p-3 rounded-xl border-gray-300 shadow-sm focus:ring-2
+                               focus:ring-sky-500 transition">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="archived">Archived</option>
+                    </select>
+                </div>
 
-            {{-- Sort Order --}}
-            <label class="font-semibold">Sort Order</label>
-            <input type="number" name="sort_order" class="w-full mb-3 p-2 border rounded" value="0">
+                {{-- Sort Order --}}
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700">Sort Order</label>
+                    <input type="number" name="sort_order" value="0"
+                        class="w-full p-3 rounded-xl border-gray-300 shadow-sm focus:ring-2
+                               focus:ring-sky-500 transition">
+                </div>
 
-            {{-- Hidden Created By --}}
-            <input type="hidden" name="created_by" value="{{ Auth::id() }}">
+                {{-- Created by --}}
+                <input type="hidden" name="created_by" value="{{ Auth::id() }}">
 
-            <button class="mt-4 px-4 py-2 bg-sky-600 text-white rounded-lg">
-                Save Section
-            </button>
-        </form>
+                {{-- Submit Button --}}
+                <div class="pt-4">
+                    <button
+                        class="px-6 py-3 bg-gradient-to-r from-sky-600 to-blue-500 text-white font-semibold
+                               rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition">
+                        Save Section
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
+    {{-- Scripts --}}
     <script>
-        // Auto load departments based on organization
+        // Load departments dynamically
         document.getElementById('organization').addEventListener('change', function() {
             fetch('/admin/departments/by-organization/' + this.value)
                 .then(res => res.json())
@@ -77,10 +123,12 @@
                 });
         });
 
-        // Auto-generate slug from name
+        // Auto slug generator
         document.querySelector('input[name="name"]').addEventListener('input', function() {
             document.getElementById('slug').value =
-                this.value.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9\-]/g, '');
+                this.value.toLowerCase()
+                .replace(/ /g, '-')
+                .replace(/[^a-z0-9\-]/g, '');
         });
     </script>
 </x-admin-layout>
