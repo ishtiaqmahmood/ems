@@ -114,12 +114,12 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     // section management routes
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('sections', App\Http\Controllers\Admin\Section\SectionController::class);
+        Route::resource('sections', App\Http\Controllers\admin\Section\SectionController::class);
         Route::get('departments/by-organization/{id}', function ($id) {
             return \App\Models\Department::where('organization_id', $id)->get();
         });
     });
-    Route::get('/admin/sections/{section}', [App\Http\Controllers\Admin\Section\SectionController::class, 'show'])
+    Route::get('/admin/sections/{section}', [App\Http\Controllers\admin\Section\SectionController::class, 'show'])
         ->name('admin.sections.show');
 
     // employee management routes
@@ -129,9 +129,9 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     // documents management routes
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('documents', App\Http\Controllers\Admin\Documents\DocumentController::class);
+        Route::resource('documents', App\Http\Controllers\admin\Documents\DocumentController::class);
     });
-    Route::get('admin/documents/{document}', [App\Http\Controllers\Admin\Documents\DocumentController::class, 'show'])
+    Route::get('admin/documents/{document}', [App\Http\Controllers\admin\Documents\DocumentController::class, 'show'])
         ->name('admin.documents.show');
 
     // photos management routes
