@@ -6,180 +6,156 @@ use App\Http\Controllers\Controller;
 use App\Models\Vacation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class VacationController extends Controller
 {
-    // List all leaves (HR/Admin only)
+    /**
+     * Show all vacations
+     */
     public function index()
     {
         $user = Auth::user();
 
+        // HR/Admin: show all
         if (in_array($user->role, ['Admin', 'HR'])) {
             $vacations = Vacation::with('user')->latest()->paginate(10);
-        } else {
+        }
+        // Normal user: show only own
+        else {
             $vacations = Vacation::where('user_id', $user->id)->latest()->paginate(10);
         }
 
         return view('vacations.index', compact('vacations'));
     }
 
-    // Show form to apply for leave (Viewer)
+    /**
+     * Show create form
+     */
     public function create()
     {
         return view('vacations.create');
     }
 
-    // Store new leave request
+    /**
+     * Store leave request
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'start_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'type' => 'required|in:annual,sick,unpaid,other',
-            'reason' => 'nullable|string|max:1000',
+            'start_date'   => 'required|date|after_or_equal:today',
+            'end_date'     => 'required|date|after_or_equal:start_date',
+            'type'         => 'required|in:annual,sick,unpaid,other',
+            'reason'       => 'nullable|string|max:1000',
+            'description'  => 'nullable|string|max:2000',
+            'letter_pdf'       => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
         ]);
+
+        $userId = Auth::id();
+
+        // 🚫 Allow one leave request per day
+        $alreadyApplied = Vacation::where('user_id', $userId)
+            ->whereDate('created_at', now()->toDateString())
+            ->exists();
+
+        if ($alreadyApplied) {
+            return back()->withErrors(['error' => 'You can apply for leave only once per day.']);
+        }
+
+        // Upload file
+        $filePath = null;
+        if ($request->hasFile('letter_pdf')) {
+            $filePath = $request->file('letter_pdf')->store('vacations', 'public');
+        }
 
         Vacation::create([
-            'user_id' => Auth::id(),
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'type' => $request->type,
-            'reason' => $request->reason,
-            'status' => 'pending',
+            'user_id'     => $userId,
+            'start_date'  => $request->start_date,
+            'end_date'    => $request->end_date,
+            'type'        => $request->type,
+            'reason'      => $request->reason,
+            'description' => $request->description,
+            'letter_pdf'   => $filePath,
+            'status'      => 'pending', // Admin/HR will update
         ]);
 
-        return redirect()->route('vacations.index')->with('success', 'Leave request submitted successfully!');
+        return redirect()->route('vacations.index')
+            ->with('success', 'Leave request submitted successfully!');
     }
 
-    // Approve or reject leave (HR/Admin only)
-    public function updateStatus(Request $request, Vacation $vacation)
+    /**
+     * Show edit form
+     */
+    public function edit(Vacation $vacation)
     {
-        $user = Auth::user();
-        if (!in_array($user->role, ['Admin', 'HR'])) {
-            abort(403);
-        }
-
-        $request->validate(['status' => 'required|in:approved,rejected']);
-
-        $vacation->update(['status' => $request->status]);
-
-        return back()->with('success', 'Leave status updated successfully.');
+        $this->authorizeOwner($vacation);
+        return view('vacations.edit', compact('vacation'));
     }
 
-    public function summary(Request $request)
+    /**
+     * Update leave request
+     */
+    public function update(Request $request, Vacation $vacation)
     {
-        $user = Auth::user();
-        $year = $request->input('year', now()->year);
+        $this->authorizeOwner($vacation);
 
-        // Monthly data
-        $monthlyData = [];
-        foreach (range(1, 12) as $m) {
-            $monthlyData[] = Vacation::where('user_id', $user->id)
-                ->whereYear('start_date', $year)
-                ->whereMonth('start_date', $m)
-                ->where('status', 'approved')
-                ->sum('total_days');
+        // Cannot edit approved or rejected leaves
+        if ($vacation->status !== 'pending') {
+            return back()->withErrors(['error' => 'You cannot edit an approved or rejected leave request.']);
         }
 
-        // Monthly, Yearly, All Time totals
-        $monthlyTotal = Vacation::where('user_id', $user->id)
-            ->whereYear('start_date', now()->year)
-            ->whereMonth('start_date', now()->month)
-            ->where('status', 'approved')
-            ->sum('total_days');
+        $request->validate([
+            'start_date'   => 'required|date|after_or_equal:today',
+            'end_date'     => 'required|date|after_or_equal:start_date',
+            'type'         => 'required|in:annual,sick,unpaid,other',
+            'reason'       => 'nullable|string|max:1000',
+            'description'  => 'nullable|string|max:2000',
+            'letter_pdf'    => 'nullable|file|mimes:pdf,doc,docx,jpg,png|max:2048',
+        ]);
 
-        $yearlyTotal = Vacation::where('user_id', $user->id)
-            ->whereYear('start_date', $year)
-            ->where('status', 'approved')
-            ->sum('total_days');
-
-        $allTimeTotal = Vacation::where('user_id', $user->id)
-            ->where('status', 'approved')
-            ->sum('total_days');
-
-        // Yearly data for chart (last 5 years)
-        $yearlyData = [];
-        foreach (range(now()->year - 5, now()->year) as $y) {
-            $yearlyData[$y] = Vacation::where('user_id', $user->id)
-                ->whereYear('start_date', $y)
-                ->where('status', 'approved')
-                ->sum('total_days');
-        }
-
-        // All-time data per year
-        $alltimeData = $yearlyData; // can use same as yearlyData if needed
-
-        return view('vacations.summary', compact(
-            'monthlyTotal',
-            'yearlyTotal',
-            'allTimeTotal',
-            'monthlyData',
-            'year',
-            'yearlyData',
-            'alltimeData'
-        ));
-    }
-
-
-    public function adminSummary(Request $request)
-    {
-        $year = $request->input('year', now()->year);
-        $month = $request->input('month', now()->month);
-
-        // Employees summary
-        $employees = \App\Models\User::whereIn('role', ['Viewer'])
-            ->get()
-            ->map(function ($user) use ($month, $year) {
-                return [
-                    'name' => $user->name,
-                    'monthly' => $user->vacations()
-                        ->whereYear('start_date', $year)
-                        ->whereMonth('start_date', $month)
-                        ->where('status', 'approved')
-                        ->sum('total_days'),
-                    'yearly' => $user->vacations()
-                        ->whereYear('start_date', $year)
-                        ->where('status', 'approved')
-                        ->sum('total_days'),
-                    'all_time' => $user->vacations()
-                        ->where('status', 'approved')
-                        ->sum('total_days'),
-                ];
-            });
-
-        // Overall totals
-        $overall = [
-            'monthly' => \App\Models\Vacation::whereYear('start_date', $year)
-                ->whereMonth('start_date', $month)
-                ->where('status', 'approved')
-                ->sum('total_days'),
-            'yearly' => \App\Models\Vacation::whereYear('start_date', $year)
-                ->where('status', 'approved')
-                ->sum('total_days'),
-            'all_time' => \App\Models\Vacation::where('status', 'approved')->sum('total_days'),
-        ];
-
-        // Monthly data for Chart.js
-        $monthlyData = [];
-        foreach (\App\Models\User::whereIn('role', ['Viewer'])->get() as $user) {
-            $monthlyCounts = [];
-            foreach (range(1, 12) as $m) {
-                $monthlyCounts[] = $user->vacations()
-                    ->whereYear('start_date', $year)
-                    ->whereMonth('start_date', $m)
-                    ->where('status', 'approved')
-                    ->sum('total_days');
+        // File update
+        if ($request->hasFile('letter_pdf')) {
+            if ($vacation->letter_pdf && Storage::disk('public')->exists($vacation->letter_pdf)) {
+                Storage::disk('public')->delete($vacation->letter_pdf);
             }
-
-            $monthlyData[] = [
-                'label' => $user->name,
-                'data' => $monthlyCounts,
-                'backgroundColor' => 'rgba(14, 165, 233, 0.6)',
-                'borderColor' => 'rgba(14, 165, 233, 1)',
-                'borderWidth' => 1,
-            ];
+            $vacation->letter_pdf = $request->file('letter_pdf')->store('vacations', 'public');
         }
 
-        return view('vacations.admin_summary', compact('employees', 'month', 'year', 'overall', 'monthlyData'));
+        $vacation->update([
+            'start_date'  => $request->start_date,
+            'end_date'    => $request->end_date,
+            'type'        => $request->type,
+            'reason'      => $request->reason,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('vacations.index')
+            ->with('success', 'Leave request updated successfully!');
+    }
+
+    /**
+     * Delete request (user only)
+     */
+    public function destroy(Vacation $vacation)
+    {
+        $this->authorizeOwner($vacation);
+
+        if ($vacation->file_path) {
+            Storage::disk('public')->delete($vacation->file_path);
+        }
+
+        $vacation->delete();
+
+        return redirect()->route('vacations.index')->with('success', 'Leave request deleted successfully.');
+    }
+
+    /**
+     * Ensure only the owner can edit/delete
+     */
+    private function authorizeOwner(Vacation $vacation)
+    {
+        if ($vacation->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
     }
 }

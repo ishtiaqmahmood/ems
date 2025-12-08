@@ -19,12 +19,12 @@ use App\Http\Controllers\admin\Department\DepartmentController;
 use App\Http\Controllers\admin\Employer\EmployerController;
 use App\Http\Controllers\admin\Event\EventController;
 use App\Http\Controllers\admin\Admin\AdminController;
+use App\Http\Controllers\admin\Leave\LeaveController;
+use App\Http\Controllers\Home\HomeController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
-    Route::get('/', function () {
-        return view('index');
-    })->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
     // user profile routes
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -68,11 +68,10 @@ Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     Route::post('/vacations', [VacationController::class, 'store'])->name('vacations.store');
 
     // HR/Admin approval routes
-
+    Route::get('vacations/{vacation}/edit', [VacationController::class, 'edit'])->name('vacations.edit');
+    Route::patch('vacations/{vacation}', [VacationController::class, 'update'])->name('vacations.update');
+    Route::delete('vacations/{vacation}', [VacationController::class, 'destroy'])->name('vacations.destroy');
     Route::patch('/vacations/{vacation}/status', [VacationController::class, 'updateStatus'])->name('vacations.updateStatus');
-
-    Route::get('/vacations/summary', [VacationController::class, 'summary'])->name('vacations.summary');
-    Route::get('/vacations/summary/admin', [VacationController::class, 'adminSummary'])->name('vacations.adminSummary');
 });
 
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
@@ -192,6 +191,19 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     Route::get('admin/salaries', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'all'])
         ->name('admin.salaries.all');
+
+
+    // Admin Leave Management
+    Route::prefix('admin')->name('admin.')->group(function () {
+
+        Route::get('/leaves', [LeaveController::class, 'index'])->name('leaves.index');
+
+        Route::get('/leaves/{id}', [LeaveController::class, 'show'])->name('leaves.show');
+
+        Route::put('/leaves/{id}', [LeaveController::class, 'update'])->name('leaves.update');
+
+        Route::delete('/leaves/{id}', [LeaveController::class, 'destroy'])->name('leaves.destroy');
+    });
 });
 
 

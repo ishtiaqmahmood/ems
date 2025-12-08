@@ -8,6 +8,11 @@
     @vite('resources/css/app.css')
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- Bootstrap Icons CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -17,99 +22,113 @@
 
     {{-- Sidebar --}}
     <aside class="w-64 bg-white shadow-md flex-shrink-0 flex flex-col">
-        <a href="{{ route('home') }}">
-            <div class="px-6 py-4 text-2xl font-bold border-b border-gray-200 cursor-pointer hover:bg-gray-100">
-                EMS
-            </div>
-        </a>
+        <div
+            class="px-6 py-5 border-b border-gray-200 cursor-pointer bg-white/80 backdrop-blur-sm
+            hover:bg-white transition">
+            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <div
+                    class="p-2 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-md group-hover:shadow-lg transition">
+                    <i class="bi bi-speedometer2 text-xl"></i>
+                </div>
+                <span
+                    class="text-2xl font-extrabold bg-gradient-to-r from-sky-600 to-indigo-600 text-transparent bg-clip-text group-hover:scale-105 transition">
+                    EMS
+                </span>
+            </a>
+        </div>
 
         <nav class="flex-1 px-4 py-6 space-y-2">
-            {{-- <a href="{{ route('dashboard') }}"
-                class="block px-4 py-2 rounded-lg hover:bg-indigo-100 {{ request()->routeIs('dashboard') ? 'bg-indigo-100 font-semibold' : '' }}">Dashboard</a>
-            <a href="{{ route('employees.index') }}"
-                class="block px-4 py-2 rounded-lg hover:bg-indigo-100 {{ request()->routeIs('employees.*') ? 'bg-indigo-100 font-semibold' : '' }}">Employees</a>
-            <a href="{{ route('departments.index') }}"
-                class="block px-4 py-2 rounded-lg hover:bg-indigo-100 {{ request()->routeIs('departments.*') ? 'bg-indigo-100 font-semibold' : '' }}">Departments</a>
-            <a href="{{ route('attendance.index') }}"
-                class="block px-4 py-2 rounded-lg hover:bg-indigo-100 {{ request()->routeIs('attendance.*') ? 'bg-indigo-100 font-semibold' : '' }}">Attendance</a>
-            <a href="{{ route('leaves.index') }}"
-                class="block px-4 py-2 rounded-lg hover:bg-indigo-100 {{ request()->routeIs('leaves.*') ? 'bg-indigo-100 font-semibold' : '' }}">Leaves</a> --}}
-            <a href="{{ route('attendance.index') }}"
-                class="flex items-center px-4 py-2 rounded-lg border
-    {{ request()->routeIs('attendance.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
 
-                Attendance
+            <!-- Attendance -->
+            <a href="{{ route('attendance.index') }}"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('attendance.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                <i class="bi bi-calendar-check"></i> Attendance
             </a>
+
+            <!-- Profile -->
             <a href="{{ route('profile.show') }}"
-                class="block px-4 py-2 rounded-lg border
-          {{ request()->routeIs('profile.*')
-              ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-              : 'border-gray-200 text-gray-700' }}
-          hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                Profile
-            </a>
-            <a href="#"
-                class="block px-4 py-2 rounded-lg border
-   {{ request()->routeIs('documents.*')
-       ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-       : 'border-gray-200 text-gray-700' }}
-   hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                Documents
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('profile.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                <i class="bi bi-person-circle"></i> Profile
             </a>
 
+            <!-- Documents -->
             <a href="#"
-                class="block px-4 py-2 rounded-lg border
-   {{ request()->routeIs('photos.*')
-       ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-       : 'border-gray-200 text-gray-700' }}
-   hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                Photos
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('documents.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                <i class="bi bi-file-earmark-text"></i> Documents
             </a>
 
+            <!-- Photos -->
+            <a href="#"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('photos.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                <i class="bi bi-image"></i> Photos
+            </a>
+
+            <!-- Calendar -->
             <a href="{{ route('calendar.index') }}"
-                class="flex items-center px-4 py-2 rounded-lg border
-    {{ request()->routeIs('calendar.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('calendar.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
 
-                Calendar
+                <i class="bi bi-calendar-event"></i> Calendar
             </a>
 
-
+            <!-- Leave -->
             <a href="{{ route('vacations.index') }}"
-                class="flex items-center px-4 py-2 rounded-lg border
-    {{ request()->routeIs('vacations.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('vacations.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
 
-                Leave
+                <i class="bi bi-airplane-fill"></i> Leave
             </a>
 
+            <!-- Payroll -->
             <a href="#"
-                class="flex items-center px-4 py-2 rounded-lg border
-    {{ request()->routeIs('salaries.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('salaries.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
 
-                Payroll
+                <i class="bi bi-cash-coin"></i> Payroll
             </a>
 
+            <!-- Events -->
             <a href="#"
-                class="flex items-center px-4 py-2 rounded-lg border
-    {{ request()->routeIs('events.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                Events
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+        {{ request()->routeIs('events.*')
+            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+            : 'border-gray-200 text-gray-700' }}
+        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+
+                <i class="bi bi-megaphone"></i> Events
             </a>
 
         </nav>
+
 
         @auth
             <div class="px-4 py-6 border-t border-gray-200">
