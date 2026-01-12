@@ -6,25 +6,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
+
 class Vacation extends Model
 {
+    /** @use HasFactory<\Database\Factories\VacationFactory> */
     use HasFactory;
 
     protected $fillable = [
         'user_id',
+        'leave_type_id',
         'start_date',
         'end_date',
         'total_days',
-        'type',
         'status',
+        'medical_certificate',
         'reason',
         'description',
         'letter_pdf',
+        'approved_by',
+        'approved_at',
     ];
 
     protected $casts = [
         'start_date' => 'date',
         'end_date'   => 'date',
+        'approved_at' => 'datetime',
     ];
 
     /**
@@ -33,6 +39,16 @@ class Vacation extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function leaveType()
+    {
+        return $this->belongsTo(LeaveType::class);
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 
     /**

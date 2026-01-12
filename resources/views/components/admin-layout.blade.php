@@ -376,6 +376,15 @@
                 <i class="bi bi-calendar-check text-sky-600"></i> Leaves
             </a>
 
+            <a href="{{ route('admin.leave-types.index') }}"
+                class="flex items-center gap-2 px-4 py-2 rounded-lg border
+                {{ request()->routeIs('admin.leave-types.*')
+                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
+                    : 'border-gray-200 text-gray-700' }}
+                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+                <i class="bi bi-clipboard-check text-sky-600"></i> Leave Types
+            </a>
+
             {{-- <!-- 🔹 Settings -->
             <a href="#"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border

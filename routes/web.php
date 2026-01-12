@@ -21,6 +21,7 @@ use App\Http\Controllers\admin\Event\EventController;
 use App\Http\Controllers\admin\Admin\AdminController;
 use App\Http\Controllers\admin\Leave\LeaveController;
 use App\Http\Controllers\Home\HomeController;
+use App\Http\Controllers\admin\Leave\LeaveTypeController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
@@ -203,6 +204,8 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
         Route::put('/leaves/{id}', [LeaveController::class, 'update'])->name('leaves.update');
 
         Route::delete('/leaves/{id}', [LeaveController::class, 'destroy'])->name('leaves.destroy');
+
+        Route::resource('leave-types', LeaveTypeController::class);
     });
 });
 
