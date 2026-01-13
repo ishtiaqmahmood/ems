@@ -32,7 +32,7 @@
                 </div>
                 <span
                     class="text-2xl font-extrabold bg-gradient-to-r from-sky-600 to-indigo-600 text-transparent bg-clip-text group-hover:scale-105 transition">
-                    EMS
+                    LMS
                 </span>
             </a>
         </div>

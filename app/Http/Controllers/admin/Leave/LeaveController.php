@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin\Leave;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Vacation;
+use App\Models\LeaveType;
 
 class LeaveController extends Controller
 {
@@ -29,7 +30,9 @@ class LeaveController extends Controller
         // Keep search query in pagination links
         $leaves->appends($request->only('search'));
 
-        return view('admin.leaves.index', compact('leaves'));
+        $leaveTypes = LeaveType::latest()->paginate(10);
+
+        return view('admin.leaves.index', compact('leaves', 'leaveTypes'));
     }
 
 

@@ -25,7 +25,7 @@
         <a href="/admin">
             <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
                 <h2 class="text-xl font-bold text-sky-700 flex items-center gap-2">
-                    <i class="bi bi-building-gear text-sky-600"></i> EMS Panel
+                    <i class="bi bi-building-gear text-sky-600"></i> LMS Panel
                 </h2>
             </div>
         </a>
@@ -83,56 +83,6 @@
                 </div>
             </div>
 
-
-            {{-- <!-- Organization -->
-            <button @click="orgOpen = !orgOpen"
-                class="flex items-center justify-between w-full px-4 py-2 rounded-lg border
-                {{ request()->routeIs('organization.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <span class="flex items-center gap-2"><i class="bi bi-building text-sky-600"></i> Organization</span>
-                <i class="bi" :class="orgOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-            </button>
-
-            <!-- 🔸 Department -->
-            <div x-show="orgOpen" x-collapse class="pl-6 space-y-2">
-                <button @click="deptOpen = !deptOpen"
-                    class="flex items-center justify-between w-full px-4 py-2 rounded-lg border
-                    {{ request()->routeIs('departments.*')
-                        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                        : 'border-gray-200 text-gray-700' }}
-                    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                    <span class="flex items-center gap-2"><i class="bi bi-diagram-3 text-sky-600"></i>
-                        Departments</span>
-                    <i class="bi" :class="deptOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-                </button>
-
-                <!-- 🔹 Sections -->
-                <div x-show="deptOpen" x-collapse class="pl-6 space-y-2">
-                    <button @click="sectionOpen = !sectionOpen"
-                        class="flex items-center justify-between w-full px-4 py-2 rounded-lg border
-                        {{ request()->routeIs('sections.*')
-                            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                            : 'border-gray-200 text-gray-700' }}
-                        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                        <span class="flex items-center gap-2"><i class="bi bi-grid text-sky-600"></i> Sections</span>
-                        <i class="bi" :class="sectionOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-                    </button>
-
-                    <!-- 🔹 Employees -->
-                    <div x-show="sectionOpen" x-collapse class="pl-6 space-y-2">
-                        <a href="#"
-                            class="block px-4 py-2 rounded-lg border
-                            {{ request()->routeIs('employees.*')
-                                ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                                : 'border-gray-200 text-gray-700' }}
-                            hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                            <i class="bi bi-people text-sky-600 mr-2"></i> Employees
-                        </a>
-                    </div>
-                </div>
-            </div> --}}
 
             <!-- 🔹 Organization -->
             <a href="{{ route('admin.organizations.index') }}"
@@ -208,154 +158,6 @@
                 <i class="bi bi-image text-sky-600"></i> Media library
             </a>
 
-
-            {{-- <!-- 🔹 Attendance Management Dropdown -->
-            <div x-data="{ open: false }" class="relative">
-                <!-- Dropdown Button -->
-                <button @click="open = !open"
-                    class="w-full flex items-center justify-between gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('attendance.*') ||
-        request()->routeIs('attendancepolicies.*') ||
-        request()->routeIs('attendancerecords.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-calendar-check text-sky-600"></i>
-                        Attendance Manage
-                    </div>
-                    <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-sky-600 transition"></i>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div x-show="open" x-transition class="mt-2 ml-4 flex flex-col gap-1 border-l border-sky-200 pl-3">
-                    <!-- Attendance Policies -->
-                    <a href="#"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('attendancepolicies.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-clipboard-check text-sky-500"></i> Attendance Policies
-                    </a>
-
-                    <!-- Attendance Records -->
-                    <a href="#"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('attendancerecords.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-journal-text text-sky-500"></i> Attendance Records
-                    </a>
-                </div>
-            </div>
-
-            <!-- 🔹 Leave Management Dropdown -->
-            <div x-data="{ open: false }" class="relative">
-                <!-- Dropdown Button -->
-                <button @click="open = !open"
-                    class="w-full flex items-center justify-between gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('leaves.*') ||
-        request()->routeIs('leavetypes.*') ||
-        request()->routeIs('leaveapplications.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-calendar-week text-sky-600"></i>
-                        Leave Management
-                    </div>
-                    <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-sky-600 transition"></i>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div x-show="open" x-transition class="mt-2 ml-4 flex flex-col gap-1 border-l border-sky-200 pl-3">
-                    <!-- Leave Types -->
-                    <a href="#"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('leaveapplications.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-envelope-paper text-sky-500"></i> Leave Types
-
-                        <!-- Leave Applications -->
-                        <a href="#"
-                            class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('leaveapplications.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                            <i class="bi bi-envelope-paper text-sky-500"></i> Leave Applications
-                        </a>
-                </div>
-            </div>
-
-            <!-- 🔹 Time Tracking Dropdown -->
-            <div x-data="{ open: false }" class="relative">
-                <!-- Dropdown Button -->
-                <button @click="open = !open"
-                    class="w-full flex items-center justify-between gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('timetracking.*') || request()->routeIs('timeentries.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-stopwatch text-sky-600"></i>
-                        Time Tracking
-                    </div>
-                    <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-sky-600 transition"></i>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div x-show="open" x-transition class="mt-2 ml-4 flex flex-col gap-1 border-l border-sky-200 pl-3">
-                    <!-- Time Entries -->
-                    <a href="#"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('timeentries.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-clock-history text-sky-500"></i> Time Entries
-                    </a>
-                </div>
-            </div> --}}
-
-            <!-- 🔹 Payroll Management Dropdown -->
-            <div x-data="{ open: false }" class="relative">
-                <!-- Dropdown Button -->
-                <button @click="open = !open"
-                    class="w-full flex items-center justify-between gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('payroll.*') || request()->routeIs('salary.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                    <div class="flex items-center gap-2">
-                        <i class="bi bi-cash-stack text-sky-600"></i>
-                        Payroll
-                    </div>
-                    <i :class="open ? 'bi bi-chevron-up' : 'bi bi-chevron-down'" class="text-sky-600 transition"></i>
-                </button>
-
-                <!-- Dropdown Menu -->
-                <div x-show="open" x-collapse x-transition
-                    class="mt-2 ml-4 flex flex-col gap-1 border-l border-sky-200 pl-3">
-                    <!-- Employer Salary -->
-                    <a href="{{ route('admin.salaries.all') }}"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('admin.salaries.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-wallet2 text-sky-500"></i> Employer Salary
-                    </a>
-                    <!-- Salary Garde-->
-                    <a href="{{ route('admin.salary-grades.index') }}"
-                        class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm
-           {{ request()->routeIs('admin.salary-grades.*')
-               ? 'bg-sky-100 text-sky-800 font-semibold'
-               : 'text-gray-700 hover:bg-sky-100 hover:text-sky-800' }}">
-                        <i class="bi bi-bar-chart-steps text-sky-500"></i> Salary Grades
-                    </a>
-                </div>
-            </div>
-
-
             <!-- 🔹 Events -->
             <a href="{{ route('admin.events.index') }}"
                 class="flex items-center gap-2 px-4 py-2 rounded-lg border
@@ -385,15 +187,6 @@
                 <i class="bi bi-clipboard-check text-sky-600"></i> Leave Types
             </a>
 
-            {{-- <!-- 🔹 Settings -->
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('settings.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-gear text-sky-600"></i> Settings
-            </a> --}}
         </nav>
 
 

@@ -23,7 +23,7 @@
                     <p class="text-sm text-gray-500">Leave Type</p>
                     <span
                         class="inline-block mt-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold">
-                        {{ ucfirst($leave->type) }}
+                        {{ ucfirst($leave->leaveType?->name_en ?? '—') }}
                     </span>
                 </div>
 
