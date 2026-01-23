@@ -55,11 +55,55 @@
 
             </div>
 
+            <!-- Contact & Employee Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <p class="text-sm text-gray-500">Mobile</p>
+                    <p class="text-gray-900">{{ $leave->mobile ?? '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Address</p>
+                    <p class="text-gray-900">{{ $leave->address ?? '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">NID Number</p>
+                    <p class="text-gray-900">{{ $leave->nid_number ?? '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Salary</p>
+                    <p class="text-gray-900">{{ $leave->salary ? number_format($leave->salary, 2) : '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Designation</p>
+                    <p class="text-gray-900">{{ $leave->designation ?? '—' }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Replacement User</p>
+                    <p class="text-gray-900">{{ $leave->replacement?->name ?? '—' }}</p>
+                </div>
+            </div>
+
+            <!-- Leave Balance -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                <div>
+                    <p class="text-sm text-gray-500">Due Leave</p>
+                    <p class="text-gray-900">{{ $leave->due_leave ?? 0 }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Earned Leaves</p>
+                    <p class="text-gray-900">{{ $leave->earned_leaves ?? 0 }}</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">Leaves Taken</p>
+                    <p class="text-gray-900">{{ $leave->leaves_taken ?? 0 }}</p>
+                </div>
+            </div>
+
             <!-- Reason -->
             <div>
                 <p class="text-sm text-gray-500">Reason</p>
                 <p class="mt-1 text-gray-800 leading-relaxed">
-                    {{ $leave->reason }}
+                    {{ $leave->reason ?? '—' }}
                 </p>
             </div>
 
@@ -67,7 +111,7 @@
             <div>
                 <p class="text-sm text-gray-500">Description</p>
                 <p class="mt-1 text-gray-800 leading-relaxed">
-                    {{ $leave->description }}
+                    {{ $leave->description ?? '—' }}
                 </p>
             </div>
 
@@ -75,14 +119,26 @@
             @if ($leave->letter_pdf)
                 <div>
                     <p class="text-sm text-gray-500">Attached Letter</p>
-
                     <a href="{{ $leave->letter_pdf_url }}" target="_blank"
                         class="inline-flex items-center mt-2 px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg shadow transition">
-                        View PDF
+                        View Letter
                         <i class="bi bi-file-earmark-pdf text-white ml-2"></i>
                     </a>
                 </div>
             @endif
+
+            <!-- Medical Certificate -->
+            @if ($leave->medical_certificate)
+                <div>
+                    <p class="text-sm text-gray-500">Medical Certificate</p>
+                    <a href="{{ $leave->medical_certificate_url }}" target="_blank"
+                        class="inline-flex items-center mt-2 px-5 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow transition">
+                        View Certificate
+                        <i class="bi bi-file-earmark-medical text-white ml-2"></i>
+                    </a>
+                </div>
+            @endif
+
         </div>
 
         <!-- Update Status Section -->

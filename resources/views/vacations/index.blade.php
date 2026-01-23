@@ -31,6 +31,7 @@
                             <th class="px-6 py-4">Period</th>
                             <th class="px-6 py-4 text-center">Days</th>
                             <th class="px-6 py-4">Leave Type</th>
+                            <th class="px-6 py-4">Replacement</th>
                             <th class="px-6 py-4 text-center">Status</th>
                             {{-- <th class="px-6 py-4">Reason</th> --}}
                             <th class="px-6 py-4 text-center">Actions</th>
@@ -58,8 +59,13 @@
                                     <span
                                         class="inline-flex items-center px-3 py-1 rounded-full
                                                text-xs font-semibold bg-sky-100 text-sky-700">
-                                        {{ $vacation->leaveType?->name_en ?? '—' }}
+                                        {{ $vacation->leaveType?->name_bn ?? '—' }}
                                     </span>
+                                </td>
+
+                                <!-- Replacement User -->
+                                <td class="px-6 py-4">
+                                    {{ $vacation->replacementUser?->name ?? '—' }}
                                 </td>
 
                                 <!-- Status -->

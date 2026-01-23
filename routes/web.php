@@ -22,6 +22,10 @@ use App\Http\Controllers\admin\Admin\AdminController;
 use App\Http\Controllers\admin\Leave\LeaveController;
 use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\admin\Leave\LeaveTypeController;
+use App\Http\Controllers\Vacation\CasualLeaveFormController;
+use App\Http\Controllers\Vacation\DisabilityLeaveFormController;
+use App\Http\Controllers\Vacation\EmergencyLeaveFormController;
+use App\Http\Controllers\Vacation\LeaveWithoutPayFormController;
 
 Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     // Protected routes go here
@@ -73,6 +77,22 @@ Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     Route::patch('vacations/{vacation}', [VacationController::class, 'update'])->name('vacations.update');
     Route::delete('vacations/{vacation}', [VacationController::class, 'destroy'])->name('vacations.destroy');
     Route::patch('/vacations/{vacation}/status', [VacationController::class, 'updateStatus'])->name('vacations.updateStatus');
+    Route::get('/vacations/casual/create', [CasualLeaveFormController::class, 'create'])
+        ->name('vacations.casual.create');
+    Route::post('/vacations/casual', [CasualLeaveFormController::class, 'store'])
+        ->name('vacations.casual.store');
+    Route::get('/vacations/emergency/create', [EmergencyLeaveFormController::class, 'create'])
+        ->name('vacations.emergency.create');
+    Route::post('/vacations/emergency', [EmergencyLeaveFormController::class, 'store'])
+        ->name('vacations.emergency.store');
+    Route::get('/vacations/leave-without-pay/create', [LeaveWithoutPayFormController::class, 'create'])
+        ->name('vacations.leave_without_pay.create');
+    Route::post('/vacations/leave-without-pay', [LeaveWithoutPayFormController::class, 'store'])
+        ->name('vacations.leave_without_pay.store');
+    Route::get('/vacations/disability/create', [DisabilityLeaveFormController::class, 'create'])
+        ->name('vacations.disability.create');
+    Route::post('/vacations/disability', [DisabilityLeaveFormController::class, 'store'])
+        ->name('vacations.disability.store');
 });
 
 Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {

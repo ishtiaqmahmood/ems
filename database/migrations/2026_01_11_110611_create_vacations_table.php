@@ -17,6 +17,19 @@ return new class extends Migration
             $table->foreignId('leave_type_id')
                 ->constrained('leave_types')
                 ->restrictOnDelete();
+            $table->string('mobile')->nullable();
+            $table->text('address')->nullable();
+            $table->string('nid_number')->nullable();
+            $table->decimal('salary', 15, 2)->nullable();
+            $table->string('designation')->nullable();
+            $table->integer('due_leave')->nullable();
+            $table->integer('earned_leaves')->nullable();
+            $table->integer('leaves_taken')->nullable();
+            $table->foreignId('replacement_user_id') // Added (Selectable from users)
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
+
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('total_days');

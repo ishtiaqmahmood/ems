@@ -5,37 +5,59 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-
+use Carbon\Carbon;
 
 class Vacation extends Model
 {
-    /** @use HasFactory<\Database\Factories\VacationFactory> */
     use HasFactory;
 
     protected $fillable = [
         'user_id',
         'leave_type_id',
+
+        // Employee info (snapshot at time of leave)
+        'mobile',
+        'address',
+        'nid_number',
+        'salary',
+        'designation',
+
+        // Leave balance info
+        'due_leave',
+        'earned_leaves',
+        'leaves_taken',
+
+        // Replacement
+        'replacement_user_id',
+
+        // Leave dates
         'start_date',
         'end_date',
         'total_days',
+
+        // Status & approval
         'status',
-        'medical_certificate',
-        'reason',
-        'description',
-        'letter_pdf',
         'approved_by',
         'approved_at',
+
+        // Documents & notes
+        'medical_certificate',
+        'letter_pdf',
+        'reason',
+        'description',
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date'   => 'date',
-        'approved_at' => 'datetime',
+        'start_date'   => 'date',
+        'end_date'     => 'date',
+        'approved_at'  => 'datetime',
+        'salary'       => 'decimal:2',
     ];
 
-    /**
-     * Relationship: each vacation belongs to a user.
-     */
+    /* =======================
+     | Relationships
+     ======================= */
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -46,39 +68,48 @@ class Vacation extends Model
         return $this->belongsTo(LeaveType::class);
     }
 
+    public function replacementUser()
+    {
+        return $this->belongsTo(User::class, 'replacement_user_id');
+    }
+
     public function approver()
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
 
-    /**
-     * Boot methods
-     */
-    public static function boot()
+    /* =======================
+     | Model Events
+     ======================= */
+
+    protected static function boot()
     {
         parent::boot();
 
-        // Auto-calculate total_days
         static::creating(function ($vacation) {
-            $vacation->total_days = self::computeDays($vacation->start_date, $vacation->end_date);
+            $vacation->total_days = self::computeDays(
+                $vacation->start_date,
+                $vacation->end_date
+            );
         });
 
         static::updating(function ($vacation) {
-            // Recalculate days when date changes
             if ($vacation->isDirty(['start_date', 'end_date'])) {
-                $vacation->total_days = self::computeDays($vacation->start_date, $vacation->end_date);
+                $vacation->total_days = self::computeDays(
+                    $vacation->start_date,
+                    $vacation->end_date
+                );
             }
 
-            // Delete old PDF if replaced
+            // Remove old PDF if replaced
             if ($vacation->isDirty('letter_pdf')) {
-                $original = $vacation->getOriginal('letter_pdf');
-                if ($original && Storage::disk('public')->exists($original)) {
-                    Storage::disk('public')->delete($original);
+                $old = $vacation->getOriginal('letter_pdf');
+                if ($old && Storage::disk('public')->exists($old)) {
+                    Storage::disk('public')->delete($old);
                 }
             }
         });
 
-        // Delete PDF when vacation record is deleted
         static::deleting(function ($vacation) {
             if ($vacation->letter_pdf && Storage::disk('public')->exists($vacation->letter_pdf)) {
                 Storage::disk('public')->delete($vacation->letter_pdf);
@@ -86,20 +117,21 @@ class Vacation extends Model
         });
     }
 
-    /**
-     * Helper to compute days.
-     */
-    private static function computeDays($start, $end)
+    /* =======================
+     | Helpers & Accessors
+     ======================= */
+
+    private static function computeDays($start, $end): int
     {
-        return $start && $end
-            ? (new \DateTime($end))->diff(new \DateTime($start))->days + 1
-            : 0;
+        if (!$start || !$end) {
+            return 0;
+        }
+
+        return Carbon::parse($start)
+            ->diffInDays(Carbon::parse($end)) + 1; // inclusive
     }
 
-    /**
-     * Accessor: Full PDF URL
-     */
-    public function getLetterPdfUrlAttribute()
+    public function getLetterPdfUrlAttribute(): ?string
     {
         return $this->letter_pdf
             ? asset('storage/' . $this->letter_pdf)
