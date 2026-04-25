@@ -4,201 +4,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard | LMS</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js" defer></script>
-
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
-    <!-- Bootstrap Icons CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
+    <style>
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+    </style>
 </head>
 
-<body class="bg-gray-100 h-screen flex overflow-hidden">
+<body class="bg-slate-50 font-sans antialiased h-screen flex overflow-hidden selection:bg-sky-100 selection:text-sky-900">
 
     {{-- Sidebar --}}
-    <!-- ✅ HRM Admin Panel Sidebar -->
-    <aside x-data="{ orgOpen: false, deptOpen: false, sectionOpen: false }" class="w-64 bg-white border-r border-gray-200 min-h-screen flex flex-col shadow-lg">
+    <aside class="w-72 bg-white border-r border-slate-100 h-screen flex flex-col shadow-[20px_0_40px_-20px_rgba(0,0,0,0.02)] z-50">
 
-        <!-- 🔹 Sidebar Header -->
-        <a href="/admin">
-            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h2 class="text-xl font-bold text-sky-700 flex items-center gap-2">
-                    <i class="bi bi-building-gear text-sky-600"></i> LMS Panel
-                </h2>
+        <!-- 🔹 Brand Header -->
+        <div class="px-8 py-10 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-600 to-indigo-700 flex items-center justify-center text-white shadow-2xl shadow-sky-200">
+                <i class="bi bi-layers-half text-2xl"></i>
             </div>
-        </a>
-
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 tracking-tighter">EMS <span class="text-sky-600">Pro</span></h2>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] leading-none">Admin Suite</p>
+            </div>
+        </div>
 
         <!-- 🔹 Sidebar Navigation -->
-        <nav class="flex-1 px-4 py-6 space-y-2 text-sm font-medium overflow-y-auto">
+        <nav class="flex-1 px-6 space-y-1 overflow-y-auto pb-10">
 
-            <!-- Profile -->
-            <a href="{{ route('admin.profile.show') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.profile.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-person-circle text-sky-600"></i> Profile
-            </a>
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-4">System Core</div>
 
-            <!-- 🔹 Staff Dropdown -->
-            <div x-data="{ staffOpen: false }">
-                <button @click="staffOpen = !staffOpen"
-                    class="flex items-center justify-between w-full px-4 py-2 rounded-lg border
-            {{ request()->routeIs('staff.*')
-                ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                : 'border-gray-200 text-gray-700' }}
-            hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                    <span class="flex items-center gap-2">
-                        <i class="bi bi-people-fill text-sky-600"></i> Staff
-                    </span>
-                    <i class="bi" :class="staffOpen ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+            <x-nav-link href="/admin" :active="request()->routeIs('adminhome')" icon="bi-grid-1x2-fill">Dashboard</x-nav-link>
+            <x-nav-link :href="route('admin.profile.show')" :active="request()->routeIs('admin.profile.*')" icon="bi-person-badge-fill">My Profile</x-nav-link>
+
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-6">Organization</div>
+
+            <x-nav-link :href="route('admin.organizations.index')" :active="request()->routeIs('admin.organizations.*')" icon="bi-building-fill">Organizations</x-nav-link>
+            <x-nav-link :href="route('admin.departments.index')" :active="request()->routeIs('admin.departments.*')" icon="bi-diagram-3-fill">Departments</x-nav-link>
+            <x-nav-link :href="route('admin.sections.index')" :active="request()->routeIs('admin.sections.*')" icon="bi-stack">Sections</x-nav-link>
+
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-6">Workforce</div>
+
+            <x-nav-link :href="route('admin.employers.index')" :active="request()->routeIs('admin.employers.*')" icon="bi-people-fill">Employees</x-nav-link>
+            <x-nav-link :href="route('admin.leaves.index')" :active="request()->routeIs('admin.leaves.*')" icon="bi-calendar-check-fill">Leaves</x-nav-link>
+
+            <div x-data="{ staffOpen: {{ request()->routeIs('admin.users.*') || request()->routeIs('admin.users.list') ? 'true' : 'false' }} }" class="space-y-1">
+                <button @click="staffOpen = !staffOpen" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl text-slate-600 font-bold hover:bg-slate-50 transition-all group">
+                    <div class="flex items-center gap-3">
+                        <i class="bi bi-shield-lock-fill text-lg opacity-40 group-hover:text-sky-600 transition-colors"></i>
+                        <span>Access Control</span>
+                    </div>
+                    <i class="bi text-[10px] transition-transform duration-300" :class="staffOpen ? 'bi-chevron-up rotate-180' : 'bi-chevron-down'"></i>
                 </button>
-
-                <!-- 🔸 Dropdown Items -->
-                <div x-show="staffOpen" x-collapse class="pl-6 space-y-2">
-
-                    <!-- 🛡 User Roles -->
-                    <a href="{{ route('admin.users.index') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.users.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                        <i class="bi bi-shield-lock text-sky-600"></i> User Roles
-                    </a>
-
-                    <!-- 👥 User List -->
-                    <a href="{{ route('admin.users.list') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('admin.users.list') ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold' : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                        <i class="bi bi-person-lines-fill text-sky-600"></i>
-                        User List
-                    </a>
-
+                <div x-show="staffOpen" x-collapse x-cloak class="pl-4 space-y-1">
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*') && !request()->routeIs('admin.users.list')" icon="bi-key-fill" subnav>Roles</x-nav-link>
+                    <x-nav-link :href="route('admin.users.list')" :active="request()->routeIs('admin.users.list')" icon="bi-person-lines-fill" subnav>Users</x-nav-link>
                 </div>
             </div>
 
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-6">Resources</div>
 
-            <!-- 🔹 Organization -->
-            <a href="{{ route('admin.organizations.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('admin.organizations.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-building text-sky-600 text-lg"></i>
-                <span>Organization</span>
-            </a>
-
-            <!-- 🔹 Departments -->
-            <a href="{{ route('admin.departments.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('admin.departments.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-diagram-3 text-sky-600 text-lg"></i>
-                <span>Departments</span>
-            </a>
-
-            <!-- 🔹 Sections -->
-            <a href="{{ route('admin.sections.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('admin.sections.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-grid-1x2 text-sky-600 text-lg"></i>
-                <span>Sections</span>
-            </a>
-
-            <!-- 🔹 Employees -->
-            <a href="{{ route('admin.employers.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-    {{ request()->routeIs('admin.employers.*')
-        ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-        : 'border-gray-200 text-gray-700' }}
-    hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-people text-sky-600 text-lg"></i>
-                <span>Employees</span>
-            </a>
-
-            <!-- 🔹 Document -->
-            <a href="{{ route('admin.documents.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.documents.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-calendar3 text-sky-600"></i> Documents
-            </a>
-
-            <!-- 🔹 Calendar -->
-            <a href="{{ route('admin.calendar.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.calendar.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-calendar3 text-sky-600"></i> Calendar
-            </a>
-
-            <!-- 🔹 Photos -->
-            <a href="{{ route('admin.photos.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.photos.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-image text-sky-600"></i> Media library
-            </a>
-
-            <!-- 🔹 Events -->
-            <a href="{{ route('admin.events.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.events.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-calendar-event text-sky-600"></i> Events
-            </a>
-
-            <!-- 🔹 Leaves -->
-            <a href="{{ route('admin.leaves.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.leaves.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-calendar-check text-sky-600"></i> Leaves
-            </a>
-
-            <a href="{{ route('admin.leave-types.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-                {{ request()->routeIs('admin.leave-types.*')
-                    ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-                    : 'border-gray-200 text-gray-700' }}
-                hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-                <i class="bi bi-clipboard-check text-sky-600"></i> Leave Types
-            </a>
+            <x-nav-link :href="route('admin.documents.index')" :active="request()->routeIs('admin.documents.*')" icon="bi-file-earmark-zip-fill">Documents</x-nav-link>
+            <x-nav-link :href="route('admin.calendar.index')" :active="request()->routeIs('admin.calendar.*')" icon="bi-calendar3">Events Hub</x-nav-link>
+            <x-nav-link :href="route('admin.photos.index')" :active="request()->routeIs('admin.photos.*')" icon="bi-images">Media Library</x-nav-link>
 
         </nav>
 
-
-
+        <!-- 🔹 Sidebar Footer -->
         @auth
-            <div class="px-4 py-6 border-t border-gray-200">
+            <div class="p-6 border-t border-slate-50">
                 <form method="POST" action="/logout">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
-                        class="w-full text-left px-4 py-2 rounded-lg hover:bg-red-100 text-red-600 font-semibold">
-                        Log Out
+                        class="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-[1.25rem] bg-rose-50 text-rose-600 font-black text-xs uppercase tracking-widest hover:bg-rose-600 hover:text-white hover:shadow-xl hover:shadow-rose-100 transition-all duration-300 group">
+                        <i class="bi bi-power text-lg transition-transform group-hover:rotate-90"></i>
+                        <span>Secure Logout</span>
                     </button>
                 </form>
             </div>
@@ -206,14 +92,18 @@
     </aside>
 
     {{-- Main Content --}}
-    <div class="flex-1 flex flex-col overflow-hidden">
-        {{-- Top Navbar --}}
+    <div class="flex-1 flex flex-col overflow-hidden relative">
         <x-header :pageTitle="$pageTitle ?? 'Dashboard'" />
 
-        {{-- Page Content --}}
-        <main class="flex-1 overflow-y-auto p-6">
-            {{ $slot }}
+        <main class="flex-1 overflow-y-auto relative z-10">
+            <div class="min-h-full pb-20">
+                {{ $slot }}
+            </div>
         </main>
+
+        {{-- Decorative Elements --}}
+        <div class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-sky-50/20 to-indigo-50/20 blur-[120px] -z-10 rounded-full"></div>
+        <div class="absolute bottom-0 left-0 w-1/3 h-1/3 bg-gradient-to-tr from-violet-50/20 to-fuchsia-50/20 blur-[120px] -z-10 rounded-full"></div>
     </div>
     @stack('scripts')
 

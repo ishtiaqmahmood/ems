@@ -71,6 +71,7 @@ Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
     Route::get('/vacations', [VacationController::class, 'index'])->name('vacations.index');
     Route::get('/vacations/create', [VacationController::class, 'create'])->name('vacations.create');
     Route::post('/vacations', [VacationController::class, 'store'])->name('vacations.store');
+    Route::get('/vacations/{vacation}', [VacationController::class, 'show'])->name('vacations.show');
 
     // HR/Admin approval routes
     Route::get('vacations/{vacation}/edit', [VacationController::class, 'edit'])->name('vacations.edit');

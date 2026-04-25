@@ -20,11 +20,21 @@ class AdminController extends Controller
         // === Analytics ===
 
         // 1. Employer Growth (Last 12 months)
-        $monthlyGrowth = \App\Models\Employer::selectRaw('COUNT(id) as total, DATE_FORMAT(created_at, "%b %Y") as month')
+        // Detect database driver for compatibility (SQLite vs MySQL)
+        $driver = config('database.default');
+        $dateFormat = ($driver === 'sqlite')
+            ? 'strftime("%Y-%m", created_at)'
+            : 'DATE_FORMAT(created_at, "%Y-%m")';
+
+        $monthlyGrowth = \App\Models\Employer::selectRaw("COUNT(id) as total, $dateFormat as month")
             ->groupBy('month')
-            ->orderByRaw('MIN(created_at)')
+            ->orderBy('month', 'asc')
             ->take(12)
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $item->month = \Carbon\Carbon::createFromFormat('Y-m', $item->month)->format('M Y');
+                return $item;
+            });
 
         // 2. Department-wise Employees
         $deptStats = \App\Models\Department::withCount('employees')->get();

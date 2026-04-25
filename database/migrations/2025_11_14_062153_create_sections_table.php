@@ -55,7 +55,7 @@ return new class extends Migration
             $table->timestamps();
 
             //  Full-text search support for fast search
-            $table->fullText(['name', 'description']);
+             // $table->fullText(['name', 'description']);
         });
     }
 

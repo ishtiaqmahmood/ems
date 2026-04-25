@@ -31,6 +31,23 @@ class VacationController extends Controller
     }
 
     /**
+     * Display the specified vacation.
+     */
+    public function show(Vacation $vacation)
+    {
+        $user = Auth::user();
+
+        // Check authorization: Admin/HR can see all, others only their own
+        if (!in_array($user->role, ['Admin', 'HR']) && $vacation->user_id !== $user->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $vacation->load(['user', 'leaveType', 'replacementUser']);
+
+        return view('vacations.show', compact('vacation'));
+    }
+
+    /**
      * Show create form
      */
     public function create()

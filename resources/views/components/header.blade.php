@@ -1,22 +1,34 @@
-<header class="flex justify-between items-center px-6 py-4 bg-white shadow border-b border-gray-200">
+<header class="flex justify-between items-center px-10 py-5 bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100/50 shadow-sm">
     <!-- Page Title -->
-    <h1 class="text-2xl font-semibold text-gray-800">{{ $pageTitle ?? 'Dashboard' }}</h1>
+    <div class="flex items-center gap-4">
+        <div class="w-1 h-8 bg-sky-600 rounded-full"></div>
+        <h1 class="text-xl font-black text-gray-900 tracking-tight">{{ $pageTitle ?? 'Dashboard' }}</h1>
+    </div>
 
-    <!-- User Info -->
-    <div class="flex items-center space-x-3">
+    <!-- User & Actions -->
+    <div class="flex items-center gap-6">
+
+        {{-- Notification Bell --}}
+        <button class="relative p-2 text-gray-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition-all group">
+            <i class="bi bi-bell text-xl"></i>
+            <span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white group-hover:scale-125 transition-transform"></span>
+        </button>
+
         @auth
-            <a href="{{ route('profile.show') }}"
-                class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-indigo-100 transition">
-                <!-- User Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M5.121 17.804A9 9 0 1118.88 6.196 9 9 0 015.121 17.804z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+            <div class="h-8 w-px bg-gray-100"></div>
 
-                <!-- Username -->
-                <span class="text-gray-700 font-medium">{{ Auth::user()->name }}</span>
+            <a href="{{ route('profile.show') }}"
+                class="flex items-center gap-3 pl-2 pr-4 py-2 rounded-2xl hover:bg-slate-50 transition-all group">
+
+                {{-- Avatar Circle --}}
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-black shadow-lg shadow-sky-100 group-hover:scale-105 transition-transform">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </div>
+
+                <div class="hidden md:block">
+                    <p class="text-sm font-black text-gray-900 leading-none mb-1 group-hover:text-sky-600 transition-colors">{{ Auth::user()->name }}</p>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">{{ Auth::user()->role }}</p>
+                </div>
             </a>
         @endauth
     </div>

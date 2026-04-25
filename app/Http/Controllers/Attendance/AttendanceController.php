@@ -112,6 +112,24 @@ class AttendanceController extends Controller
 
         return redirect()->route('attendance.index')->with('success', 'Attendance recorded successfully.');
     }
+
+    /**
+     * Display the specified attendance record.
+     */
+    public function show(Attendance $attendance)
+    {
+        $user = Auth::user();
+
+        // Check authorization: Admin/HR can see all, others only their own
+        if (!in_array($user->role, ['Admin', 'HR']) && $attendance->user_id !== $user->id) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $attendance->load('user');
+
+        return view('attendance.show', compact('attendance'));
+    }
+
     // Edit form
     public function edit(Attendance $attendance)
     {
