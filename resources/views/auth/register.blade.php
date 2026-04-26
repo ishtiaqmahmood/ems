@@ -17,11 +17,8 @@
             </div>
 
             <div class="relative z-10">
-                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-violet-600 shadow-xl mb-8">
-                    <i class="bi bi-person-plus-fill text-2xl"></i>
-                </div>
-                <h2 class="text-4xl font-black text-white leading-tight">Begin your <br><span class="text-sky-300">professional journey.</span></h2>
-                <p class="text-sky-100/70 mt-6 font-medium leading-relaxed max-w-sm">Join the enterprise standard for workforce management and unlock your team's full potential.</p>
+                <h2 class="text-5xl font-black text-white leading-tight">Begin your <br><span class="text-sky-300">professional journey.</span></h2>
+                <p class="text-sky-100/70 mt-8 text-lg font-medium leading-relaxed max-w-sm">Join the enterprise standard for workforce management and unlock your team's full potential.</p>
             </div>
 
             <div class="relative z-10 space-y-6">
@@ -49,14 +46,8 @@
         </div>
 
         {{-- Right Side: Register Form --}}
-        <div class="flex-1 bg-white p-10 sm:p-16 flex flex-col justify-center">
-            <div class="mb-8 lg:hidden flex justify-center">
-                <div class="w-12 h-12 bg-violet-600 rounded-2xl flex items-center justify-center text-white shadow-xl">
-                    <i class="bi bi-person-plus-fill text-2xl"></i>
-                </div>
-            </div>
-
-            <div class="mb-10 text-center lg:text-left">
+        <div class="flex-1 bg-white p-10 sm:p-20 flex flex-col justify-center">
+            <div class="mb-12 text-center lg:text-left">
                 <h1 class="text-3xl font-black text-slate-900 tracking-tight">Create Account</h1>
                 <p class="text-slate-500 mt-2 font-medium">Please fill in your details to get started.</p>
             </div>
