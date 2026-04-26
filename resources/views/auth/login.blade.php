@@ -17,11 +17,8 @@
             </div>
 
             <div class="relative z-10">
-                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-sky-600 shadow-xl mb-8">
-                    <i class="bi bi-layers-half text-2xl"></i>
-                </div>
-                <h2 class="text-4xl font-black text-white leading-tight">Master your workforce <br><span class="text-sky-300">with precision.</span></h2>
-                <p class="text-sky-100/70 mt-6 font-medium leading-relaxed max-w-sm">The all-in-one management suite designed for modern enterprises that demand speed and elegance.</p>
+                <h2 class="text-5xl font-black text-white leading-tight">Master your workforce <br><span class="text-sky-300">with precision.</span></h2>
+                <p class="text-sky-100/70 mt-8 text-lg font-medium leading-relaxed max-w-sm">The all-in-one management suite designed for modern enterprises that demand speed and elegance.</p>
             </div>
 
             <div class="relative z-10">
@@ -37,14 +34,8 @@
         </div>
 
         {{-- Right Side: Login Form --}}
-        <div class="flex-1 bg-white p-10 sm:p-16 flex flex-col justify-center">
-            <div class="mb-10 lg:hidden flex justify-center">
-                <div class="w-12 h-12 bg-sky-600 rounded-2xl flex items-center justify-center text-white shadow-xl">
-                    <i class="bi bi-layers-half text-2xl"></i>
-                </div>
-            </div>
-
-            <div class="mb-10 text-center lg:text-left">
+        <div class="flex-1 bg-white p-10 sm:p-20 flex flex-col justify-center">
+            <div class="mb-12 text-center lg:text-left">
                 <h1 class="text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h1>
                 <p class="text-slate-500 mt-2 font-medium">Please enter your credentials to access your portal.</p>
             </div>
