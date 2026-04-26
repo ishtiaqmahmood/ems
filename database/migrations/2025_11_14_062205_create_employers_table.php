@@ -80,7 +80,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Full text search for large HRM databases
-            $table->fullText(['name', 'email', 'phone', 'designation']);
+             // $table->fullText(['name', 'email', 'phone', 'designation']);
         });
     }
 

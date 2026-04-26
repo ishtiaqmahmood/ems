@@ -4,140 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Employee Portal | EMS</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
-    <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
-    <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <!-- Bootstrap Icons CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
+    <style>
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    </style>
 </head>
 
-<body class="bg-gray-100 h-screen flex overflow-hidden">
+<body class="bg-slate-50 font-sans antialiased h-screen flex overflow-hidden selection:bg-indigo-100 selection:text-indigo-900">
 
     {{-- Sidebar --}}
-    <aside class="w-64 bg-white shadow-md flex-shrink-0 flex flex-col">
-        <div
-            class="px-6 py-5 border-b border-gray-200 cursor-pointer bg-white/80 backdrop-blur-sm
-            hover:bg-white transition">
-            <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-                <div
-                    class="p-2 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-md group-hover:shadow-lg transition">
-                    <i class="bi bi-speedometer2 text-xl"></i>
-                </div>
-                <span
-                    class="text-2xl font-extrabold bg-gradient-to-r from-sky-600 to-indigo-600 text-transparent bg-clip-text group-hover:scale-105 transition">
-                    LMS
-                </span>
-            </a>
+    <aside class="w-72 bg-white border-r border-slate-100 h-screen flex flex-col shadow-[20px_0_40px_-20px_rgba(0,0,0,0.02)] z-50">
+
+        <div class="px-8 py-10 flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center text-white shadow-2xl shadow-indigo-200">
+                <i class="bi bi-person-workspace text-2xl"></i>
+            </div>
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 tracking-tighter">EMS <span class="text-indigo-600">Portal</span></h2>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] leading-none">Employee Self Service</p>
+            </div>
         </div>
 
-        <nav class="flex-1 px-4 py-6 space-y-2">
+        <nav class="flex-1 px-6 space-y-1 overflow-y-auto pb-10">
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-4">Personal</div>
 
-            <!-- Attendance -->
-            <a href="{{ route('attendance.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('attendance.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+            <x-nav-link-viewer href="{{ route('home') }}" :active="request()->routeIs('home')" icon="bi-house-heart-fill">Dashboard</x-nav-link-viewer>
+            <x-nav-link-viewer :href="route('profile.show')" :active="request()->routeIs('profile.*')" icon="bi-person-circle">My Profile</x-nav-link-viewer>
 
-                <i class="bi bi-calendar-check"></i> Attendance
-            </a>
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-6">Records</div>
 
-            <!-- Profile -->
-            <a href="{{ route('profile.show') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('profile.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
+            <x-nav-link-viewer :href="route('attendance.index')" :active="request()->routeIs('attendance.*')" icon="bi-calendar-check-fill">My Attendance</x-nav-link-viewer>
+            <x-nav-link-viewer :href="route('vacations.index')" :active="request()->routeIs('vacations.*')" icon="bi-airplane-engines-fill">Leave Requests</x-nav-link-viewer>
+            <x-nav-link-viewer :href="route('calendar.index')" :active="request()->routeIs('calendar.*')" icon="bi-calendar3-event">Company Calendar</x-nav-link-viewer>
 
-                <i class="bi bi-person-circle"></i> Profile
-            </a>
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-6">Resources</div>
 
-            <!-- Documents -->
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('documents.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-
-                <i class="bi bi-file-earmark-text"></i> Documents
-            </a>
-
-            <!-- Photos -->
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('photos.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-
-                <i class="bi bi-image"></i> Photos
-            </a>
-
-            <!-- Calendar -->
-            <a href="{{ route('calendar.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('calendar.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-
-                <i class="bi bi-calendar-event"></i> Calendar
-            </a>
-
-            <!-- Leave -->
-            <a href="{{ route('vacations.index') }}"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('vacations.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-
-                <i class="bi bi-airplane-fill"></i> Leave
-            </a>
-
-            <!-- Payroll -->
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('salaries.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-
-                <i class="bi bi-cash-coin"></i> Payroll
-            </a>
-
-            <!-- Events -->
-            <a href="#"
-                class="flex items-center gap-2 px-4 py-2 rounded-lg border
-        {{ request()->routeIs('events.*')
-            ? 'bg-sky-100 border-sky-300 text-sky-800 font-semibold'
-            : 'border-gray-200 text-gray-700' }}
-        hover:bg-sky-200 hover:border-sky-400 hover:text-sky-900 transition">
-
-                <i class="bi bi-megaphone"></i> Events
-            </a>
-
+            <x-nav-link-viewer href="#" icon="bi-file-earmark-text-fill">Documents</x-nav-link-viewer>
+            <x-nav-link-viewer href="#" icon="bi-cash-stack">Payroll & Slips</x-nav-link-viewer>
+            <x-nav-link-viewer href="#" icon="bi-megaphone-fill">Announcements</x-nav-link-viewer>
         </nav>
 
-
         @auth
-            <div class="px-4 py-6 border-t border-gray-200">
+            <div class="p-6 border-t border-slate-50">
                 <form method="POST" action="/logout">
                     @csrf
                     @method('DELETE')
                     <button type="submit"
-                        class="w-full text-left px-4 py-2 rounded-lg hover:bg-red-100 text-red-600 font-semibold">
-                        Log Out
+                        class="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-[1.25rem] bg-indigo-50 text-indigo-600 font-black text-xs uppercase tracking-widest hover:bg-indigo-600 hover:text-white hover:shadow-xl hover:shadow-indigo-100 transition-all duration-300 group">
+                        <i class="bi bi-power text-lg transition-transform group-hover:rotate-90"></i>
+                        <span>Secure Logout</span>
                     </button>
                 </form>
             </div>
@@ -145,14 +68,16 @@
     </aside>
 
     {{-- Main Content --}}
-    <div class="flex-1 flex flex-col overflow-hidden">
-        {{-- Top Navbar --}}
-        <x-header :pageTitle="$pageTitle ?? 'Dashboard'" />
+    <div class="flex-1 flex flex-col overflow-hidden relative">
+        <x-header :pageTitle="$pageTitle ?? 'Employee Dashboard'" />
 
-        {{-- Page Content --}}
-        <main class="flex-1 overflow-y-auto p-6">
-            {{ $slot }}
+        <main class="flex-1 overflow-y-auto relative z-10">
+            <div class="min-h-full pb-20">
+                {{ $slot }}
+            </div>
         </main>
+
+        <div class="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-br from-indigo-50/20 to-violet-50/20 blur-[120px] -z-10 rounded-full"></div>
     </div>
     @stack('scripts')
 

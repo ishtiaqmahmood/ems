@@ -47,7 +47,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Full-text Search Index (MySQL Only)
-            $table->fullText(['name', 'description']);
+             // $table->fullText(['name', 'description']);
         });
     }
 
