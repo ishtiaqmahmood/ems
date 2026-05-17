@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin\Documents;
+namespace App\Http\Controllers\Admin\Documents;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
