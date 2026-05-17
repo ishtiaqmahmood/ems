@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin\Employer;
+namespace App\Http\Controllers\Admin\Employer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,6 +11,8 @@ use App\Models\Section;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Admin\StoreEmployerRequest;
+use App\Http\Requests\Admin\UpdateEmployerRequest;
 
 class EmployerController extends Controller
 {
@@ -59,38 +61,9 @@ class EmployerController extends Controller
     }
 
     // Store new employer
-    public function store(Request $request)
+    public function store(StoreEmployerRequest $request)
     {
-        $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
-            'department_id' => 'nullable|exists:departments,id',
-            'section_id' => 'nullable|exists:sections,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:employers,email',
-            'phone' => 'nullable|string|max:20',
-            'designation' => 'nullable|string|max:255',
-            'gender' => 'nullable|in:male,female,other',
-            'date_of_birth' => 'nullable|date',
-            'blood_group' => 'nullable|string|max:10',
-            'country' => 'nullable|string|max:100',
-            'city' => 'nullable|string|max:100',
-            'state' => 'nullable|string|max:100',
-            'postal_code' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'profile_image' => 'nullable|image|max:2048',
-            'documents.*' => 'nullable|file|max:5120',
-            'joining_date' => 'nullable|date',
-            'resign_date' => 'nullable|date|after_or_equal:joining_date',
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'emergency_relation' => 'nullable|string|max:100',
-            'status' => 'required|in:active,inactive,terminated,resigned',
-        ]);
-
-        $data = $request->all();
-
-        // UUID
-        $data['uuid'] = Str::uuid();
+        $data = $request->validated();
 
         // Profile Image
         if ($request->hasFile('profile_image')) {
@@ -103,10 +76,8 @@ class EmployerController extends Controller
             foreach ($request->file('documents') as $doc) {
                 $documents[] = $doc->store('employers/docs', 'public');
             }
-            $data['documents'] = json_encode($documents);
+            $data['documents'] = $documents; // Cast handles JSON
         }
-
-        $data['created_by'] = Auth::id();
 
         Employer::create($data);
 
@@ -130,35 +101,9 @@ class EmployerController extends Controller
     }
 
     // Update employer
-    public function update(Request $request, Employer $employer)
+    public function update(UpdateEmployerRequest $request, Employer $employer)
     {
-        $request->validate([
-            'organization_id' => 'required|exists:organizations,id',
-            'department_id' => 'nullable|exists:departments,id',
-            'section_id' => 'nullable|exists:sections,id',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:employers,email,' . $employer->id,
-            'phone' => 'nullable|string|max:20',
-            'designation' => 'nullable|string|max:255',
-            'gender' => 'nullable|in:male,female,other',
-            'date_of_birth' => 'nullable|date',
-            'blood_group' => 'nullable|string|max:10',
-            'country' => 'nullable|string|max:100',
-            'city' => 'nullable|string|max:100',
-            'state' => 'nullable|string|max:100',
-            'postal_code' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
-            'profile_image' => 'nullable|image|max:2048',
-            'documents.*' => 'nullable|file|max:5120',
-            'joining_date' => 'nullable|date',
-            'resign_date' => 'nullable|date|after_or_equal:joining_date',
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'emergency_relation' => 'nullable|string|max:100',
-            'status' => 'required|in:active,inactive,terminated,resigned',
-        ]);
-
-        $data = $request->all();
+        $data = $request->validated();
 
         // Profile Image
         if ($request->hasFile('profile_image')) {
@@ -168,14 +113,12 @@ class EmployerController extends Controller
 
         // Documents
         if ($request->hasFile('documents')) {
-            $documents = json_decode($employer->documents, true) ?? [];
+            $documents = $employer->documents ?? [];
             foreach ($request->file('documents') as $doc) {
                 $documents[] = $doc->store('employers/docs', 'public');
             }
-            $data['documents'] = json_encode($documents);
+            $data['documents'] = $documents; // Cast handles JSON
         }
-
-        $data['updated_by'] = Auth::id();
 
         $employer->update($data);
 
@@ -188,7 +131,7 @@ class EmployerController extends Controller
         if ($employer->profile_image) Storage::disk('public')->delete($employer->profile_image);
 
         if ($employer->documents) {
-            foreach (json_decode($employer->documents) as $doc) {
+            foreach ($employer->documents as $doc) {
                 Storage::disk('public')->delete($doc);
             }
         }

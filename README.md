@@ -4,19 +4,49 @@ A comprehensive Employee Management System (EMS) built with the Laravel framewor
 
 ## Features
 
-- **User Authentication & Role Management**: Secure login and registration with role-based access control (Admin, HR, Viewer).
-- **Employee Directory**: Manage detailed employee profiles, including personal information, designations, and joining details.
-- **Organizational Structure**: Define and manage Organizations, Departments, and Sections.
-- **Attendance Tracking**: Record and monitor employee attendance with check-in/check-out functionality and PDF export.
-- **Leave & Vacation Management**:
-    - Support for multiple leave types: Casual Leave, Emergency Leave, Disability Leave, and Leave Without Pay.
-    - Approval workflow for leave requests.
-- **Salary Management**:
-    - Define Salary Grades.
-    - Manage individual Employer Salaries and history.
-- **Calendar & Events**: Integrated calendar for managing organizational events and holidays.
-- **Document & Photo Management**: Store and organize employee documents and official photos.
-- **Responsive Dashboard**: User-friendly interface built with Tailwind CSS.
+### User Authentication & Role Management
+- **Secure Authentication**: Login and registration with email verification and password reset functionality.
+- **Role-Based Access Control (RBAC)**: Distinct permissions for **Admin**, **HR**, and **Viewer** roles.
+- **Profile Management**: Users can update their personal information and passwords.
+
+### Employee Directory
+- **Comprehensive Profiles**: Manage detailed employee data including personal info, designations, and joining details.
+- **Status Tracking**: Track employee status (Active, Inactive, Terminated, Resigned).
+- **Emergency Contacts**: Store emergency contact information for every employee.
+- **UUID & Slug Support**: Automatic generation of unique identifiers and SEO-friendly slugs for employee profiles.
+
+### Organizational Structure
+- **Organization Management**: Define and manage multiple organizations with logos and image galleries.
+- **Departmental Hierarchy**: Organize employees into departments.
+- **Section Management**: Further categorize departments into specific sections.
+- **Drag-and-Drop Sorting**: Reorder departments easily using a web interface.
+
+### Attendance Tracking
+- **Daily Attendance**: Record and monitor employee check-in and check-out times.
+- **PDF Export**: Generate and download attendance reports in PDF format.
+
+### Leave & Vacation Management
+- **Multiple Leave Types**: Support for Casual, Emergency, Disability, and Leave Without Pay.
+- **Flexible Leave Forms**: Dedicated forms for different leave requests.
+- **Approval Workflow**: Streamlined process for HR and Admin to approve or reject leave requests.
+
+### Salary Management
+- **Salary Grades**: Define standardized salary structures.
+- **Employer Salaries**: Manage individual employee salaries and track historical changes.
+- **JSON API**: Endpoint for fetching salary grade details.
+
+### Calendar & Events
+- **Integrated Calendar**: View organizational events and holidays in a month-by-month grid.
+- **Event Management**: Create, update, and delete events with custom colors and timings.
+
+### Document & Photo Management
+- **Document Storage**: Upload and manage official employee documents and contracts.
+- **Photo Gallery**: Specialized management for employee and organizational photos.
+
+### Technical Improvements
+- **PSR-4 Compliant**: Standardized directory and namespace casing for better autoloading performance.
+- **Form Request Validation**: Robust server-side validation using dedicated Request classes.
+- **Responsive Dashboard**: Modern UI built with Tailwind CSS 4 and Vite.
 
 ## Tech Stack
 

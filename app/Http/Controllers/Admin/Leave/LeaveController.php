@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin\Leave;
+namespace App\Http\Controllers\Admin\Leave;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

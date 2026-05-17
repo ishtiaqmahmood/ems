@@ -6,22 +6,22 @@ use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\Auth\PasswordResetController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\Profile\ProfileController;
-use App\Http\Controllers\admin\Photos\ImageController;
+use App\Http\Controllers\Admin\Photos\ImageController;
 use App\Http\Controllers\Attendance\AttendanceController;
 use App\Http\Controllers\Salary\SalaryController;
 use App\Http\Controllers\Vacation\VacationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
-use App\Http\Controllers\admin\profile\AdminProfileController;
-use App\Http\Controllers\admin\User\UserRoleController;
-use App\Http\Controllers\admin\Organization\OrganizationController;
-use App\Http\Controllers\admin\Department\DepartmentController;
-use App\Http\Controllers\admin\Employer\EmployerController;
-use App\Http\Controllers\admin\Event\EventController;
-use App\Http\Controllers\admin\Admin\AdminController;
-use App\Http\Controllers\admin\Leave\LeaveController;
+use App\Http\Controllers\Admin\Profile\AdminProfileController;
+use App\Http\Controllers\Admin\User\UserRoleController;
+use App\Http\Controllers\Admin\Organization\OrganizationController;
+use App\Http\Controllers\Admin\Department\DepartmentController;
+use App\Http\Controllers\Admin\Employer\EmployerController;
+use App\Http\Controllers\Admin\Event\EventController;
+use App\Http\Controllers\Admin\Admin\AdminController;
+use App\Http\Controllers\Admin\Leave\LeaveController;
 use App\Http\Controllers\Home\HomeController;
-use App\Http\Controllers\admin\Leave\LeaveTypeController;
+use App\Http\Controllers\Admin\Leave\LeaveTypeController;
 use App\Http\Controllers\Vacation\CasualLeaveFormController;
 use App\Http\Controllers\Vacation\DisabilityLeaveFormController;
 use App\Http\Controllers\Vacation\EmergencyLeaveFormController;
@@ -135,12 +135,12 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     // section management routes
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('sections', App\Http\Controllers\admin\Section\SectionController::class);
+        Route::resource('sections', App\Http\Controllers\Admin\Section\SectionController::class);
         Route::get('departments/by-organization/{id}', function ($id) {
             return \App\Models\Department::where('organization_id', $id)->get();
         });
     });
-    Route::get('/admin/sections/{section}', [App\Http\Controllers\admin\Section\SectionController::class, 'show'])
+    Route::get('/admin/sections/{section}', [App\Http\Controllers\Admin\Section\SectionController::class, 'show'])
         ->name('admin.sections.show');
 
     // employee management routes
@@ -150,9 +150,9 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     // documents management routes
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::resource('documents', App\Http\Controllers\admin\Documents\DocumentController::class);
+        Route::resource('documents', App\Http\Controllers\Admin\Documents\DocumentController::class);
     });
-    Route::get('admin/documents/{document}', [App\Http\Controllers\admin\Documents\DocumentController::class, 'show'])
+    Route::get('admin/documents/{document}', [App\Http\Controllers\Admin\Documents\DocumentController::class, 'show'])
         ->name('admin.documents.show');
 
     // photos management routes
@@ -170,7 +170,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
 
     // Calendar management routes
     Route::prefix('admin/calendar')->name('admin.calendar.')->group(function () {
-        Route::get('/', [App\Http\Controllers\admin\Calendar\CalendarController::class, 'index'])->name('index');
+        Route::get('/', [App\Http\Controllers\Admin\Calendar\CalendarController::class, 'index'])->name('index');
     });
 
     // Event management routes
@@ -182,26 +182,26 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
 
         // Salary Grade CRUD
-        Route::resource('salary-grades', \App\Http\Controllers\admin\Salary\SalaryGradeController::class);
+        Route::resource('salary-grades', \App\Http\Controllers\Admin\Salary\SalaryGradeController::class);
 
         // Employer Salary CRUD (nested)
         Route::prefix('employers/{employer}')->group(function () {
-            Route::get('salaries', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'index'])
+            Route::get('salaries', [\App\Http\Controllers\Admin\Salary\EmployerSalaryController::class, 'index'])
                 ->name('salaries.index');
 
-            Route::get('salaries/create', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'create'])
+            Route::get('salaries/create', [\App\Http\Controllers\Admin\Salary\EmployerSalaryController::class, 'create'])
                 ->name('salaries.create');
 
-            Route::post('salaries', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'store'])
+            Route::post('salaries', [\App\Http\Controllers\Admin\Salary\EmployerSalaryController::class, 'store'])
                 ->name('salaries.store');
 
-            Route::get('/salaries/{salary}/edit', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'edit'])
+            Route::get('/salaries/{salary}/edit', [\App\Http\Controllers\Admin\Salary\EmployerSalaryController::class, 'edit'])
                 ->name('salaries.edit');
 
-            Route::put('/salaries/{salary}', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'update'])
+            Route::put('/salaries/{salary}', [\App\Http\Controllers\Admin\Salary\EmployerSalaryController::class, 'update'])
                 ->name('salaries.update');
 
-            Route::delete('salaries/{salary}', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'destroy'])
+            Route::delete('salaries/{salary}', [\App\Http\Controllers\Admin\Salary\EmployerSalaryController::class, 'destroy'])
                 ->name('salaries.destroy');
         });
 
@@ -211,7 +211,7 @@ Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
         });
     });
 
-    Route::get('admin/salaries', [\App\Http\Controllers\admin\Salary\EmployerSalaryController::class, 'all'])
+    Route::get('admin/salaries', [\App\Http\Controllers\Admin\Salary\EmployerSalaryController::class, 'all'])
         ->name('admin.salaries.all');
 
 

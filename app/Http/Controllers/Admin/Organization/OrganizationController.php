@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\admin\Organization;
+namespace App\Http\Controllers\Admin\Organization;
 
 use App\Http\Controllers\Controller;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Admin\StoreOrganizationRequest;
+use App\Http\Requests\Admin\UpdateOrganizationRequest;
 
 class OrganizationController extends Controller
 {
@@ -20,20 +22,9 @@ class OrganizationController extends Controller
         return view('admin.organizations.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreOrganizationRequest $request)
     {
-        $request->validate([
-            'name'        => 'required|string|max:255',
-            'email'       => 'nullable|email',
-            'phone'       => 'nullable|string|max:20',
-            'website'     => 'nullable|url',
-            'address'     => 'nullable|string',
-            'description' => 'nullable|string',
-            'logo'        => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        ]);
-
-        $data = $request->only(['name', 'email', 'phone', 'website', 'address', 'description']);
+        $data = $request->validated();
 
         // Upload logo
         if ($request->hasFile('logo')) {
@@ -59,21 +50,9 @@ class OrganizationController extends Controller
         return view('admin.organizations.edit', compact('organization'));
     }
 
-    public function update(Request $request, Organization $organization)
+    public function update(UpdateOrganizationRequest $request, Organization $organization)
     {
-
-        $request->validate([
-            'name'        => 'required|string|max:255',
-            'email'       => 'nullable|email',
-            'phone'       => 'nullable|string|max:20',
-            'website'     => 'nullable|url',
-            'address'     => 'nullable|string',
-            'description' => 'nullable|string',
-            'logo'        => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'images.*'    => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        ]);
-
-        $data = $request->only(['name', 'email', 'phone', 'website', 'address', 'description']);
+        $data = $request->validated();
 
         // Replace logo if uploaded
         if ($request->hasFile('logo')) {
@@ -99,11 +78,6 @@ class OrganizationController extends Controller
 
     public function destroy(Organization $organization)
     {
-        // Guard against missing or null organization for safety
-        if (!isset($organization)) {
-            return redirect()->route('admin.organizations.index')->with('error', 'Organization not found.');
-        }
-
         if (!empty($organization->logo)) {
             Storage::disk('public')->delete($organization->logo);
         }
