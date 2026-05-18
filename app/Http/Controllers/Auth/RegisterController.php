@@ -36,8 +36,7 @@ class RegisterController extends Controller
         $user = User::create($userAttributes);
 
         Auth::login($user);
-        $user->sendEmailVerificationNotification();
 
-        return redirect()->route('verification.notice');
+        return redirect()->route('home');
     }
 }

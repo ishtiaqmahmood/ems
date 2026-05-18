@@ -1,8 +1,12 @@
-<header class="flex justify-between items-center px-10 py-5 bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100/50 shadow-sm">
-    <!-- Page Title -->
+<header class="flex justify-between items-center px-6 md:px-10 py-5 bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100/50 shadow-sm">
+    <!-- Page Title & Mobile Menu Toggle -->
     <div class="flex items-center gap-4">
-        <div class="w-1 h-8 bg-sky-600 rounded-full"></div>
-        <h1 class="text-xl font-black text-gray-900 tracking-tight">{{ $pageTitle ?? 'Dashboard' }}</h1>
+        <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden p-2 text-gray-600 hover:bg-slate-50 rounded-xl transition-all">
+            <i class="bi bi-list text-2xl"></i>
+        </button>
+
+        <div class="hidden md:block w-1 h-8 bg-sky-600 rounded-full"></div>
+        <h1 class="text-lg md:text-xl font-black text-gray-900 tracking-tight truncate max-w-[200px] md:max-w-none">{{ $pageTitle ?? 'Dashboard' }}</h1>
     </div>
 
     <!-- User & Actions -->

@@ -18,10 +18,51 @@
     </style>
 </head>
 
-<body class="bg-slate-50 font-sans antialiased h-screen flex overflow-hidden selection:bg-indigo-100 selection:text-indigo-900">
+<body x-data="{ mobileMenuOpen: false }" class="bg-slate-50 font-sans antialiased h-screen flex overflow-hidden selection:bg-indigo-100 selection:text-indigo-900">
 
-    {{-- Sidebar --}}
-    <aside class="w-72 bg-white border-r border-slate-100 h-screen flex flex-col shadow-[20px_0_40px_-20px_rgba(0,0,0,0.02)] z-50">
+    {{-- Mobile Sidebar Overlay --}}
+    <div x-show="mobileMenuOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0"
+         @click="mobileMenuOpen = false"
+         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] lg:hidden">
+    </div>
+
+    {{-- Mobile Sidebar --}}
+    <aside x-show="mobileMenuOpen"
+           x-transition:enter="transition ease-out duration-300 transform"
+           x-transition:enter-start="-translate-x-full"
+           x-transition:enter-end="translate-x-0"
+           x-transition:leave="transition ease-in duration-200 transform"
+           x-transition:leave-start="translate-x-0"
+           x-transition:leave-end="-translate-x-full"
+           class="fixed inset-y-0 left-0 w-72 bg-white z-[70] flex flex-col shadow-2xl lg:hidden">
+        <div class="px-8 py-10 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center text-white">
+                    <i class="bi bi-person-workspace text-xl"></i>
+                </div>
+                <h2 class="text-xl font-black text-slate-900 tracking-tighter">EMS <span class="text-indigo-600">Portal</span></h2>
+            </div>
+            <button @click="mobileMenuOpen = false" class="p-2 text-slate-400 hover:text-slate-600">
+                <i class="bi bi-x-lg text-xl"></i>
+            </button>
+        </div>
+        <nav class="flex-1 px-6 space-y-1 overflow-y-auto pb-10">
+            <x-nav-link-viewer href="{{ route('home') }}" :active="request()->routeIs('home')" icon="bi-house-heart-fill">Dashboard</x-nav-link-viewer>
+            <x-nav-link-viewer :href="route('profile.show')" :active="request()->routeIs('profile.*')" icon="bi-person-circle">My Profile</x-nav-link-viewer>
+            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-4 py-4 mt-6">Records</div>
+            <x-nav-link-viewer :href="route('attendance.index')" :active="request()->routeIs('attendance.*')" icon="bi-calendar-check-fill">My Attendance</x-nav-link-viewer>
+            <x-nav-link-viewer :href="route('vacations.index')" :active="request()->routeIs('vacations.*')" icon="bi-airplane-engines-fill">Leave Requests</x-nav-link-viewer>
+        </nav>
+    </aside>
+
+    {{-- Desktop Sidebar --}}
+    <aside class="hidden lg:flex w-72 bg-white border-r border-slate-100 h-screen flex-col shadow-[20px_0_40px_-20px_rgba(0,0,0,0.02)] z-50">
 
         <div class="px-8 py-10 flex items-center gap-4">
             <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 flex items-center justify-center text-white shadow-2xl shadow-indigo-200">

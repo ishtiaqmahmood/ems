@@ -11,46 +11,45 @@
         </div>
 
         <!-- Stats Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @php
                 $stats = [
-                    ['name' => 'Total Employers', 'value' => $employers, 'icon' => 'bi-people-fill', 'color' => 'sky'],
+                    ['name' => 'Total Employees', 'value' => $employers, 'icon' => 'bi-people-fill', 'color' => 'indigo'],
                     [
                         'name' => 'Departments',
                         'value' => $departments,
                         'icon' => 'bi-diagram-3-fill',
-                        'color' => 'purple',
+                        'color' => 'violet',
                     ],
-                    ['name' => 'Sections', 'value' => $sections, 'icon' => 'bi-grid-1x2-fill', 'color' => 'green'],
+                    ['name' => 'Sections', 'value' => $sections, 'icon' => 'bi-grid-1x2-fill', 'color' => 'emerald'],
                     [
                         'name' => 'Organizations',
                         'value' => $organizations,
-                        'icon' => 'bi-building',
-                        'color' => 'orange',
-                    ],
-                    ['name' => 'Salary Records', 'value' => $salaries, 'icon' => 'bi-cash-stack', 'color' => 'yellow'],
+                        'icon' => 'bi-building-fill',
+                        'color' => 'amber'],
+                    ['name' => 'Salary Records', 'value' => $salaries, 'icon' => 'bi-cash-stack', 'color' => 'sky'],
                     [
                         'name' => 'Documents',
                         'value' => $documents,
                         'icon' => 'bi-file-earmark-text-fill',
-                        'color' => 'red',
+                        'color' => 'rose',
                     ],
                 ];
             @endphp
 
             @foreach ($stats as $item)
                 <div
-                    class="group bg-white/90 backdrop-blur-lg shadow-xl border border-gray-100 rounded-2xl p-6
-                    hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                    <div class="flex items-center gap-5">
+                    class="group bg-white shadow-xl shadow-slate-200/50 border border-slate-100 rounded-[2rem] p-8
+                    hover:shadow-2xl hover:shadow-slate-300 transition-all duration-500 hover:-translate-y-1">
+                    <div class="flex items-center gap-6">
                         <div
-                            class="p-4 rounded-2xl bg-{{ $item['color'] }}-100 text-{{ $item['color'] }}-600
-                            group-hover:scale-110 transition-transform duration-300">
+                            class="w-16 h-16 flex items-center justify-center rounded-2xl bg-{{ $item['color'] }}-50 text-{{ $item['color'] }}-600
+                            group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
                             <i class="bi {{ $item['icon'] }} text-3xl"></i>
                         </div>
                         <div>
-                            <p class="text-gray-500 text-sm">{{ $item['name'] }}</p>
-                            <h2 class="text-4xl font-extrabold text-gray-900 tracking-tight">{{ $item['value'] }}</h2>
+                            <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">{{ $item['name'] }}</p>
+                            <h2 class="text-3xl font-black text-slate-900 tracking-tight">{{ $item['value'] }}</h2>
                         </div>
                     </div>
                 </div>
