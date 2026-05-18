@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Vacation;
 use App\Models\LeaveType;
+use App\Notifications\LeaveStatusUpdated;
 
 class LeaveController extends Controller
 {
@@ -51,8 +52,13 @@ class LeaveController extends Controller
         ]);
 
         $leave = Vacation::findOrFail($id);
+        $oldStatus = $leave->status;
         $leave->status = $request->status;
         $leave->save();
+
+        if ($oldStatus !== $request->status) {
+            $leave->user->notify(new LeaveStatusUpdated($leave));
+        }
 
         return redirect()->route('admin.leaves.index')
             ->with('success', 'Leave status updated successfully');
