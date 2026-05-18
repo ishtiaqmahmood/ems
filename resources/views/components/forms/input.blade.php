@@ -6,7 +6,7 @@
         'id' => $name,
         'name' => $name,
         'value' => old($name),
-        'class' => 'rounded-xl bg-white/10 border border-black px-5 py-4 w-full',
+        'class' => 'rounded-2xl bg-white/50 backdrop-blur-sm border border-slate-200 px-5 py-4 w-full focus:border-sky-500 focus:ring-4 focus:ring-sky-50/50 transition-all outline-none',
     ];
 @endphp
 

@@ -8,7 +8,7 @@
                 <i class="bi bi-calendar-range text-indigo-600"></i> Quick Apply Leave
             </h2>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {{-- Casual Leave --}}
                 <a href="{{ route('vacations.casual.create') }}"
                     class="group block bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] shadow-xl shadow-indigo-100 hover:shadow-2xl hover:shadow-indigo-200 transform hover:-translate-y-2 transition-all duration-500 p-8 text-white relative overflow-hidden">
@@ -27,7 +27,10 @@
 
                 {{-- Emergency Leave --}}
                 <a href="{{ route('vacations.emergency.create') }}"
-                    class="group block bg-gradient-to-br from-red-500 to-red-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 p-6 text-white">
+                    class="group block bg-gradient-to-br from-red-500 to-red-700 rounded-[2rem] shadow-xl shadow-red-100 hover:shadow-2xl hover:shadow-red-200 transform hover:-translate-y-2 transition-all duration-500 p-6 text-white relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                        <i class="bi bi-exclamation-triangle text-[120px]"></i>
+                    </div>
                     <div class="flex flex-col items-center justify-center">
                         <div class="text-5xl mb-4">
                             <i class="fas fa-exclamation-triangle"></i>
@@ -39,20 +42,26 @@
 
                 {{-- Leave Without Pay --}}
                 <a href="{{ route('vacations.leave_without_pay.create') }}"
-                    class="group block bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 p-6 text-white">
+                    class="group block bg-gradient-to-br from-amber-500 to-orange-600 rounded-[2rem] shadow-xl shadow-amber-100 hover:shadow-2xl hover:shadow-amber-200 transform hover:-translate-y-2 transition-all duration-500 p-6 text-white relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                        <i class="bi bi-wallet2 text-[120px]"></i>
+                    </div>
                     <div class="flex flex-col items-center justify-center">
                         <div class="text-5xl mb-4">
                             <i class="fas fa-wallet"></i>
                         </div>
                         <h3 class="text-xl font-bold mb-2 group-hover:underline">বিনা বেতন ছুটি</h3>
-                        <p class="text-sm text-yellow-100 text-center">Apply for unpaid leave while keeping your
+                        <p class="text-sm text-amber-100 text-center">Apply for unpaid leave while keeping your
                             workflow intact.</p>
                     </div>
                 </a>
 
                 {{-- Disability Leave --}}
                 <a href="{{ route('vacations.disability.create') }}"
-                    class="group block bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 p-6 text-white">
+                    class="group block bg-gradient-to-br from-purple-500 to-purple-700 rounded-[2rem] shadow-xl shadow-purple-100 hover:shadow-2xl hover:shadow-purple-200 transform hover:-translate-y-2 transition-all duration-500 p-6 text-white relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                        <i class="bi bi-person-wheelchair text-[120px]"></i>
+                    </div>
                     <div class="flex flex-col items-center justify-center">
                         <div class="text-5xl mb-4">
                             <i class="fas fa-wheelchair"></i>
@@ -66,7 +75,7 @@
         </div>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
             <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
                 <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Total Applied</p>
@@ -94,7 +103,9 @@
         <div class="bg-white p-8 rounded-xl shadow border">
             <h2 class="text-2xl font-bold mb-4">Vacation Trend (Last 6 Months)</h2>
 
-            <canvas id="vacationChart" height="100"></canvas>
+            <div class="relative h-[300px] sm:h-[400px]">
+                <canvas id="vacationChart"></canvas>
+            </div>
         </div>
 
     </div>
@@ -123,6 +134,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: true
