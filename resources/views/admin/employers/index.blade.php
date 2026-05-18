@@ -22,7 +22,7 @@
 
         {{-- Table Container --}}
         <div class="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden">
-            <div class="overflow-x-auto">
+            <div class="overflow-x-auto custom-scrollbar">
                 <table class="w-full text-left">
                     <thead>
                         <tr class="text-gray-400 text-[10px] font-black uppercase tracking-[0.2em] border-b border-gray-50">

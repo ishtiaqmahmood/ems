@@ -14,7 +14,7 @@
         </div>
 
         <!-- Salary Table -->
-        <div class="bg-white shadow-xl rounded-2xl overflow-x-auto">
+        <div class="bg-white shadow-xl rounded-2xl overflow-x-auto custom-scrollbar">
             <table class="min-w-full text-sm divide-y divide-gray-200">
                 <thead class="bg-gray-50 text-gray-700 font-semibold">
                     <tr>

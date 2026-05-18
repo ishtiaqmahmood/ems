@@ -113,7 +113,7 @@
         <x-header :pageTitle="$pageTitle ?? 'Employee Dashboard'" />
 
         <main class="flex-1 overflow-y-auto relative z-10">
-            <div class="min-h-full pb-20">
+            <div class="min-h-full pb-20 p-4 sm:p-6 md:p-10">
                 {{ $slot }}
             </div>
         </main>

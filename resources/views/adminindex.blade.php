@@ -11,7 +11,7 @@
         </div>
 
         <!-- Stats Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @php
                 $stats = [
                     ['name' => 'Total Employees', 'value' => $employers, 'icon' => 'bi-people-fill', 'color' => 'indigo'],
@@ -64,7 +64,9 @@
                 <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-gray-800">
                     <i class="bi bi-graph-up text-sky-600"></i> Employer Growth (12 Months)
                 </h2>
-                <canvas id="growthChart" height="140"></canvas>
+                <div class="relative h-[300px] sm:h-[400px]">
+                    <canvas id="growthChart"></canvas>
+                </div>
             </div>
 
             <!-- Department-wise Employees -->
@@ -72,7 +74,9 @@
                 <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-gray-800">
                     <i class="bi bi-diagram-3-fill text-purple-600"></i> Department-wise Employees
                 </h2>
-                <canvas id="deptChart" height="140"></canvas>
+                <div class="relative h-[300px] sm:h-[400px]">
+                    <canvas id="deptChart"></canvas>
+                </div>
             </div>
 
             <!-- Section-wise Employees (Doughnut) -->
@@ -81,7 +85,7 @@
                 <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-gray-800">
                     <i class="bi bi-grid-1x2 text-green-600"></i> Section-wise Employees
                 </h2>
-                <div class="w-full h-[380px] flex justify-center items-center">
+                <div class="relative h-[300px] sm:h-[400px] flex justify-center items-center">
                     <canvas id="sectionChart"></canvas>
                 </div>
             </div>
@@ -121,6 +125,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     tooltip: {
                         enabled: true
@@ -142,6 +147,7 @@
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true,
