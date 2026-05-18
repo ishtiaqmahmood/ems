@@ -27,7 +27,7 @@ use App\Http\Controllers\Vacation\DisabilityLeaveFormController;
 use App\Http\Controllers\Vacation\EmergencyLeaveFormController;
 use App\Http\Controllers\Vacation\LeaveWithoutPayFormController;
 
-Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
+Route::middleware(['auth', 'role:Viewer'])->group(function () {
     // Protected routes go here
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified', 'role:Viewer'])->group(function () {
         ->name('vacations.disability.store');
 });
 
-Route::middleware(['auth', 'verified', 'role:Admin'])->group(function () {
+Route::middleware(['auth', 'role:Admin'])->group(function () {
     // Protected routes go here
 
     Route::get('/admin', [AdminController::class, 'index'])->name('adminhome');

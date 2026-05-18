@@ -3,13 +3,18 @@
 
         <h1 class="text-3xl font-extrabold text-gray-900">User Dashboard</h1>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <h2 class="text-3xl font-bold mb-8 text-gray-800 text-center">Leave Types</h2>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <h2 class="text-2xl md:text-3xl font-black mb-8 text-slate-800 flex items-center gap-3">
+                <i class="bi bi-calendar-range text-indigo-600"></i> Quick Apply Leave
+            </h2>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {{-- Casual Leave --}}
                 <a href="{{ route('vacations.casual.create') }}"
-                    class="group block bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 p-6 text-white">
+                    class="group block bg-gradient-to-br from-indigo-600 to-violet-700 rounded-[2rem] shadow-xl shadow-indigo-100 hover:shadow-2xl hover:shadow-indigo-200 transform hover:-translate-y-2 transition-all duration-500 p-8 text-white relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-110 transition-transform duration-500">
+                        <i class="bi bi-calendar-event text-[120px]"></i>
+                    </div>
                     <div class="flex flex-col items-center justify-center">
                         <div class="text-5xl mb-4">
                             <i class="fas fa-calendar-day"></i>
@@ -61,26 +66,26 @@
         </div>
 
         <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-            <div class="bg-white p-6 rounded-xl shadow border">
-                <p class="text-sm text-gray-500">Total Apply</p>
-                <h2 class="text-3xl font-bold text-gray-900">{{ $totalApplied }}</h2>
+            <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300">
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Total Applied</p>
+                <h2 class="text-4xl font-black text-slate-900">{{ $totalApplied }}</h2>
             </div>
 
-            <div class="bg-green-50 p-6 rounded-xl shadow border border-green-200">
-                <p class="text-sm text-gray-500">Approved</p>
-                <h2 class="text-3xl font-bold text-green-700">{{ $approved }}</h2>
+            <div class="bg-emerald-50/50 p-8 rounded-[2rem] shadow-sm border border-emerald-100 hover:shadow-xl hover:shadow-emerald-200/50 transition-all duration-300">
+                <p class="text-xs font-black text-emerald-600/60 uppercase tracking-widest mb-2">Approved</p>
+                <h2 class="text-4xl font-black text-emerald-700">{{ $approved }}</h2>
             </div>
 
-            <div class="bg-yellow-50 p-6 rounded-xl shadow border border-yellow-200">
-                <p class="text-sm text-gray-500">Pending</p>
-                <h2 class="text-3xl font-bold text-yellow-700">{{ $pending }}</h2>
+            <div class="bg-amber-50/50 p-8 rounded-[2rem] shadow-sm border border-amber-100 hover:shadow-xl hover:shadow-amber-200/50 transition-all duration-300">
+                <p class="text-xs font-black text-amber-600/60 uppercase tracking-widest mb-2">Pending</p>
+                <h2 class="text-4xl font-black text-amber-700">{{ $pending }}</h2>
             </div>
 
-            <div class="bg-red-50 p-6 rounded-xl shadow border border-red-200">
-                <p class="text-sm text-gray-500">Rejected</p>
-                <h2 class="text-3xl font-bold text-red-700">{{ $rejected }}</h2>
+            <div class="bg-rose-50/50 p-8 rounded-[2rem] shadow-sm border border-rose-100 hover:shadow-xl hover:shadow-rose-200/50 transition-all duration-300">
+                <p class="text-xs font-black text-rose-600/60 uppercase tracking-widest mb-2">Rejected</p>
+                <h2 class="text-4xl font-black text-rose-700">{{ $rejected }}</h2>
             </div>
 
         </div>
