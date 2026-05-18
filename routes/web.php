@@ -26,6 +26,12 @@ use App\Http\Controllers\Vacation\CasualLeaveFormController;
 use App\Http\Controllers\Vacation\DisabilityLeaveFormController;
 use App\Http\Controllers\Vacation\EmergencyLeaveFormController;
 use App\Http\Controllers\Vacation\LeaveWithoutPayFormController;
+use App\Http\Controllers\NotificationController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/api/notifications/unread', [NotificationController::class, 'unread']);
+    Route::post('/api/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+});
 
 Route::middleware(['auth', 'role:Viewer'])->group(function () {
     // Protected routes go here

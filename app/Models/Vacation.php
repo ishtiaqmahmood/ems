@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use App\Notifications\NewLeaveApplication;
+use Illuminate\Support\Facades\Notification;
 
 class Vacation extends Model
 {
@@ -91,6 +93,11 @@ class Vacation extends Model
                 $vacation->start_date,
                 $vacation->end_date
             );
+        });
+
+        static::created(function ($vacation) {
+            $admins = User::where('role', 'Admin')->get();
+            Notification::send($admins, new NewLeaveApplication($vacation));
         });
 
         static::updating(function ($vacation) {
